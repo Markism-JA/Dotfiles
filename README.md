@@ -1,0 +1,1 @@
+This repository is mainly concerned with centralizing all my configurations for the Operating System I use, Arch Linux and Windows. I use [Chezmoi](https://www.chezmoi.io/), for managing the following dotfiles.
