@@ -1,0 +1,8 @@
+# ~/.zshrc
+
+CONFIG_DIR="$HOME/.config/zshrc/"
+
+# Loop through all files (ignore directories)
+for file in "$CONFIG_DIR"/*(.); do
+    source "$file"
+done
