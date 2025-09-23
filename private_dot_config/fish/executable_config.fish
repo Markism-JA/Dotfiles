@@ -1,6 +1,6 @@
 source ~/.config/fish/keubinds.fish
 source ~/.config/fish/alias.fish
-fish_vi_key_bindings
+fish_default_key_bindings
 
 function fish_prompt -d "Write out the prompt"
     # This shows up as USER@HOST /home/user/ >, with the directory colored
