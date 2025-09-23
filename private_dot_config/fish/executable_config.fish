@@ -1,5 +1,6 @@
 source ~/.config/fish/keubinds.fish
 source ~/.config/fish/alias.fish
+source ~/.config/fish/functions.fish
 fish_default_key_bindings
 
 function fish_prompt -d "Write out the prompt"
