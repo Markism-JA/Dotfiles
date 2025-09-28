@@ -3,5 +3,5 @@ function chezmtree
 end
 
 function task --description "Manage and prioritize academic tasks"
-    python3 ~/Scripts/bin/check_tasks.py $argv
+    ~/Scripts/bin/task-manager/check_tasks.py $argv
 end
