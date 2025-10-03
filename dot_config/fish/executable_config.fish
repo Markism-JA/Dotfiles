@@ -1,5 +1,5 @@
 source ~/.config/fish/appearance.fish
-source ~/.config/fish/keubinds.fish
+source ~/.config/fish/keybinds.fish
 source ~/.config/fish/alias.fish
 source ~/.config/fish/functions.fish
 
