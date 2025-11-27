@@ -1,8 +1,17 @@
-# ~/.zshrc
-
 CONFIG_DIR="$HOME/.config/zshrc/"
+ZSH_CACHE_DIR="$HOME/.cache/zsh"
 
-# Loop through all files (ignore directories)
+if [[ ! -d "$ZSH_CACHE_DIR" ]]; then
+    mkdir -p "$ZSH_CACHE_DIR"
+fi
+
+HISTFILE="$HOME/.cache/zsh/history"
+HISTSIZE=10000
+SAVEHIST=10000
+
+autoload -Uz compinit
+compinit -d "$ZSH_CACHE_DIR/zcompdump-$ZSH_VERSION"
+
 for file in "$CONFIG_DIR"/*(.); do
     source "$file"
 done
