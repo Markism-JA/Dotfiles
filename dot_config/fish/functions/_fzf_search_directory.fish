@@ -3,7 +3,7 @@ function _fzf_search_directory --description "Search the current directory. Repl
     # Debian-based distros install fd as fdfind and the fd package is something else, so
     # check for fdfind first. Fall back to "fd" for a clear error message.
     set -f fd_cmd (command -v fdfind || command -v fd  || echo "fd")
-    set -f --append fd_cmd --color=always --follow $fzf_fd_opts
+    set -f --append fd_cmd --color=always $fzf_fd_opts
 
     set -f fzf_arguments --multi --ansi $fzf_directory_opts
     set -f token (commandline --current-token)
@@ -23,6 +23,7 @@ function _fzf_search_directory --description "Search the current directory. Repl
         set --prepend fzf_arguments --prompt="Directory> " --query="$unescaped_exp_token" --preview='_fzf_preview_file {}'
         set -f file_paths_selected ($fd_cmd 2>/dev/null | _fzf_wrapper $fzf_arguments)
     end
+
 
     if test $status -eq 0
         commandline --current-token --replace -- (string escape -- $file_paths_selected | string join ' ')
