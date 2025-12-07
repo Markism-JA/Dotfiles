@@ -1,1 +1,22 @@
-README.md
+*.md
+
+{{ if ne .chezmoi.os "linux" }}
+.zshrc
+.config/bashrc
+.config/fish
+.config/hypr
+.config/kitty
+.config/nwg-dock-hyprland
+.config/powershell
+.config/vim
+.config/zshrc
+.latexmkrc
+.tmux.conf
+{{ end }}
+
+{{ if ne .chezmoi.os "windows" }}
+.ssh/config
+.config/wezterm
+Documents/PowerShell/Microsoft.PowerShell_profile.ps1
+Documents/
+{{ end }}

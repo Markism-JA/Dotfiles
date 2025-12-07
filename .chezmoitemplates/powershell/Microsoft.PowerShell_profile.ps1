@@ -10,3 +10,12 @@ if (Test-Path $extraConfig) {
         . $_.FullName
     }
 }
+
+Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock {
+    param($wordToComplete, $commandAst, $cursorPosition)
+    dotnet complete --position $cursorPosition $commandAst.ToString() | ForEach-Object {
+        [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
+    }
+}
+
+Invoke-Expression (& { (zoxide init powershell | Out-String) })
