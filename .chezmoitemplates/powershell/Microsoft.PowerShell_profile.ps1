@@ -1,3 +1,7 @@
+# env
+$env:EDITOR = "nvim"
+$env:VISUAL = "nvim"
+
 if ($IsWindows) {
     $extraConfig = Join-Path $HOME "Documents\PowerShell\modules"
 } else {
