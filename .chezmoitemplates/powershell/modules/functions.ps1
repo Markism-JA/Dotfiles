@@ -53,3 +53,86 @@ function fzf-search-history {
     # 6. Force Cursor Shape Reset (Linux/Terminal safe method)
     Write-Host -NoNewline "$([char]27)[6 q"
 }
+
+function fzf-search-git-log {
+    # Check if in a git repo
+    if (-not (git rev-parse --git-dir 2>$null)) { 
+        Write-Error "Not in a git repository."
+        return 
+    }
+
+    # 1. Get Log Data
+    $format = '%C(bold blue)%h%C(reset) - %C(cyan)%ad%C(reset) %C(yellow)%d%C(reset) %s [%an]'
+    $logs = @(git log --no-show-signature --color=always --format=format:$format --date=short)
+    
+    if ($logs.Count -eq 0) { return }
+
+    # 2. Define fzf arguments (Blank Query)
+    $fzfArgs = @(
+        "--ansi",
+        "--multi",
+        "--prompt=Git Log> ",
+        "--border=rounded",
+        "--layout=reverse",
+        "--preview=git show --color=always {1}",
+        "--preview-window=right:60%"
+    )
+
+    # 3. Run FZF
+    $selectedLines = $logs | fzf $fzfArgs
+
+    if ($selectedLines) {
+        $hashes = $selectedLines -split "`n" | ForEach-Object {
+            # Extract hash safely
+            if ($_ -match '\b([a-f0-9]{7,})\b') { 
+                $matches[1] 
+            }
+        }
+
+        $textToInsert = $hashes -join ' '
+
+        # 4. Insert at Cursor
+        [Microsoft.PowerShell.PSConsoleReadLine]::Insert($textToInsert)
+    }
+}
+
+function fzf-search-git-status {
+    if (-not (git rev-parse --git-dir 2>$null)) { 
+        Write-Error "Not in a git repository."
+        return 
+    }
+
+    # 1. Get Status Data
+    $status = @(git -c color.status=always status --short)
+    if ($status.Count -eq 0) { return }
+
+    # 2. Define fzf arguments (Blank Query)
+    $fzfArgs = @(
+        "--ansi",
+        "--multi",
+        "--prompt=Git Status> ",
+        "--border=rounded",
+        "--layout=reverse",
+        "--nth=2..", 
+        "--preview=git diff --color=always {2}",
+        "--preview-window=right:60%"
+    )
+
+    # 3. Run FZF
+    $selectedLines = $status | fzf $fzfArgs
+
+    if ($selectedLines) {
+        $paths = $selectedLines -split "`n" | ForEach-Object {
+            if ($_ -match '^R\s+.* -> (.+)$') { 
+                $matches[1] 
+            } else { 
+                $_.Substring(3) 
+            }
+        }
+
+        $textToInsert = $paths -join ' '
+
+        # 4. Insert at Cursor
+        [Microsoft.PowerShell.PSConsoleReadLine]::Insert($textToInsert)
+    }
+}
