@@ -77,7 +77,7 @@
                 "commandline": "%SystemRoot%\\System32\\cmd.exe",
                 "font": 
                 {
-                    "face": "SpaceMono Nerd Font Mono",
+                    "face": "JetBrains Mono Nerd Font",
                     "size": 10
                 },
                 "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
@@ -95,7 +95,7 @@
             {
                 "font": 
                 {
-                    "face": "SpaceMono Nerd Font Mono",
+                    "face": "JetBrains Mono Nerd Font",
                     "size": 13
                 },
                 "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
