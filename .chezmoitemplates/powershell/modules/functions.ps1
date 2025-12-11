@@ -1,7 +1,10 @@
-function fzf-search-history {
+function Search-History
+{
     $historyPath = (Get-PSReadLineOption).HistorySavePath
 
-    if (-not $historyPath -or -not (Test-Path $historyPath)) { return }
+    if (-not $historyPath -or -not (Test-Path $historyPath))
+    { return 
+    }
 
     $line = $null
     $cursor = $null
@@ -13,7 +16,9 @@ function fzf-search-history {
     [System.Collections.ArrayList]$uniqueHistory = $rawHistory[($rawHistory.Count - 1)..0] | Select-Object -Unique
 
     $totalCount = $uniqueHistory.Count
-    if ($totalCount -eq 0) { return }
+    if ($totalCount -eq 0)
+    { return 
+    }
 
     # 3. Format lines
     $historyForFzf = 0..($totalCount - 1) | ForEach-Object {
@@ -34,7 +39,8 @@ function fzf-search-history {
     )
 
     $selectedLines = $historyForFzf | fzf $fzfArgs
-    if ($selectedLines) {
+    if ($selectedLines)
+    {
         $commands = $selectedLines -split "`n" | ForEach-Object {
             ($_ -split ' │ ', 2)[1]
         }
@@ -48,15 +54,18 @@ function fzf-search-history {
         [Microsoft.PowerShell.PSConsoleReadLine]::DeleteLine()
         [Microsoft.PowerShell.PSConsoleReadLine]::Insert($commandToInsert)
         [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition(0)
+
     }
 
     # 6. Force Cursor Shape Reset (Linux/Terminal safe method)
     Write-Host -NoNewline "$([char]27)[6 q"
 }
 
-function fzf-search-git-log {
+function Search-GitLog
+{
     # Check if in a git repo
-    if (-not (git rev-parse --git-dir 2>$null)) { 
+    if (-not (git rev-parse --git-dir 2>$null))
+    { 
         Write-Error "Not in a git repository."
         return 
     }
@@ -65,7 +74,9 @@ function fzf-search-git-log {
     $format = '%C(bold blue)%h%C(reset) - %C(cyan)%ad%C(reset) %C(yellow)%d%C(reset) %s [%an]'
     $logs = @(git log --no-show-signature --color=always --format=format:$format --date=short)
     
-    if ($logs.Count -eq 0) { return }
+    if ($logs.Count -eq 0)
+    { return 
+    }
 
     # 2. Define fzf arguments (Blank Query)
     $fzfArgs = @(
@@ -81,10 +92,12 @@ function fzf-search-git-log {
     # 3. Run FZF
     $selectedLines = $logs | fzf $fzfArgs
 
-    if ($selectedLines) {
+    if ($selectedLines)
+    {
         $hashes = $selectedLines -split "`n" | ForEach-Object {
             # Extract hash safely
-            if ($_ -match '\b([a-f0-9]{7,})\b') { 
+            if ($_ -match '\b([a-f0-9]{7,})\b')
+            { 
                 $matches[1] 
             }
         }
@@ -96,15 +109,19 @@ function fzf-search-git-log {
     }
 }
 
-function fzf-search-git-status {
-    if (-not (git rev-parse --git-dir 2>$null)) { 
+function Search-GitStatus
+{
+    if (-not (git rev-parse --git-dir 2>$null))
+    { 
         Write-Error "Not in a git repository."
         return 
     }
 
     # 1. Get Status Data
     $status = @(git -c color.status=always status --short)
-    if ($status.Count -eq 0) { return }
+    if ($status.Count -eq 0)
+    { return 
+    }
 
     # 2. Define fzf arguments (Blank Query)
     $fzfArgs = @(
@@ -121,11 +138,14 @@ function fzf-search-git-status {
     # 3. Run FZF
     $selectedLines = $status | fzf $fzfArgs
 
-    if ($selectedLines) {
+    if ($selectedLines)
+    {
         $paths = $selectedLines -split "`n" | ForEach-Object {
-            if ($_ -match '^R\s+.* -> (.+)$') { 
+            if ($_ -match '^R\s+.* -> (.+)$')
+            { 
                 $matches[1] 
-            } else { 
+            } else
+            { 
                 $_.Substring(3) 
             }
         }
