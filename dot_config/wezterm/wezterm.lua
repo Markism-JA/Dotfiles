@@ -19,7 +19,6 @@ local function load_plugin(name)
 
 	-- 3. Check for the alternative entry point: /init.lua
 	local location2 = path .. "/init.lua"
-	f = io.open(location2, "r")
 	if f then
 		f:close()
 		return dofile(location2)
@@ -32,7 +31,6 @@ end
 
 -- Load the plugins manually
 local bar = load_plugin("bar.wezterm")
-local session_manager = load_plugin("wezterm-session-manager")
 
 -- Initialize configuration
 local config = wezterm.config_builder()
@@ -63,8 +61,15 @@ config.unix_domains = {
 -- 2. SMART SPLITS HELPERS (Neovim Integration)
 -- =========================================================
 local function is_vim(pane)
-	local process_name = string.gsub(pane:get_foreground_process_name(), "(.*[/\\])(.*)", "%2")
-	return process_name == "nvim" or process_name == "vim"
+	local raw_process_name = pane:get_foreground_process_name()
+
+	if not raw_process_name then
+		return false
+	end
+
+	local process_name = string.gsub(raw_process_name, "(.*[/\\])(.*)", "%2")
+
+	return process_name == "nvim" or process_name == "vim" or process_name == "nvim.exe" or process_name == "vim.exe"
 end
 
 local direction_keys = {
@@ -168,6 +173,9 @@ config.keys = {
 
 	-- --- MISC ---
 	{ mods = "LEADER|SHIFT", key = "R", action = act.ReloadConfiguration },
+
+	-- --- PANE MANAGEMENT ---
+	{ mods = "LEADER", key = "z", action = act.TogglePaneZoomState },
 }
 
 -- =========================================================
@@ -222,13 +230,34 @@ config.key_tables = {
 -- =========================================================
 -- 5. PLUGIN VISUAL CONFIGURATION
 -- =========================================================
--- This replaces your manual status bar code
+
 bar.apply_to_config(config, {
-	position = "bottom",
-	max_width = 32,
-	dividers = "slant_right",
-	indicator_style = "cool",
-	clock_format = "%H:%M",
+	modules = {
+		tabs = {
+			active_tab_fg = 4,
+			inactive_tab_fg = 6,
+			new_tab_fg = 2,
+		},
+
+		zoom = { enabled = true },
+
+		-- Modules to DISABLE for minimalism:
+		workspace = { enabled = false },
+		leader = { enabled = false },
+		pane = { enabled = false },
+		username = { enabled = false },
+		hostname = { enabled = false },
+		spotify = { enabled = false },
+
+		-- Modules to KEEP (Clock and CWD are often essential)
+		cwd = { enabled = false },
+		clock = {
+			enabled = true,
+			icon = wezterm.nerdfonts.md_calendar_clock,
+			format = "%I:%M", -- Use 24-hour format (or "%I:%M %p" for 12-hour)
+			color = 5,
+		},
+	},
 })
 
 return config
