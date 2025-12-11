@@ -49,7 +49,8 @@ config.font = wezterm.font("JetBrainsMono Nerd Font Mono")
 config.font_size = 13
 config.color_scheme = "Material Dark"
 config.window_background_opacity = 0.70
-config.win32_system_backdrop = "Acrylic"
+config.win32_system_backdrop = "Mica"
+config.front_end = "WebGpu"
 
 -- Server / Persistence (Unix Domain)
 config.unix_domains = {
