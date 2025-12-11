@@ -58,7 +58,7 @@
     {
         "defaults": 
         {
-            "colorScheme": "One Half Dark",
+            "colorScheme": "Material Dark",
             "opacity": 70,
             "useAcrylic": true
         },
