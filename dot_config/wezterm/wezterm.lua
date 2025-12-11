@@ -1,39 +1,25 @@
 local wezterm = require("wezterm")
+
+local smart_splits = wezterm.plugin.require("https://github.com/mrjones2014/smart-splits.nvim")
+local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
+
 local act = wezterm.action
 
--- =========================================================
--- CUSTOM PLUGIN LOADER (Manual Install)
--- =========================================================
-local function load_plugin(name)
-	-- 1. Define the path to the specific plugin
-	--    (Using forward slashes is safer in Lua, even on Windows)
-	local path = "C:/Users/windows/.config/wezterm/plugins/" .. name
-
-	-- 2. Check for the standard entry point: /plugin/init.lua
-	local location1 = path .. "/plugin/init.lua"
-	local f = io.open(location1, "r")
-	if f then
-		f:close()
-		return dofile(location1)
-	end
-
-	-- 3. Check for the alternative entry point: /init.lua
-	local location2 = path .. "/init.lua"
-	if f then
-		f:close()
-		return dofile(location2)
-	end
-
-	-- 4. If not found, print a clear error to the debug window
-	wezterm.log_error("CRITICAL: Could not find init.lua for plugin '" .. name .. "' at path: " .. path)
-	return { apply_to_config = function() end } -- Return dummy to prevent crash
-end
-
--- Load the plugins manually
-local bar = load_plugin("bar.wezterm")
-
--- Initialize configuration
 local config = wezterm.config_builder()
+
+bar.apply_to_config(config)
+smart_splits.apply_to_config(config, {
+	direction_keys = { "h", "j", "k", "l" },
+	direction_keys = {
+		move = { "h", "j", "k", "l" },
+		resize = { "LeftArrow", "DownArrow", "UpArrow", "RightArrow" },
+	},
+	modifiers = {
+		move = "CTRL",
+		resize = "META",
+	},
+	log_level = "info",
+})
 
 -- =========================================================
 -- 1. GENERAL SETTINGS
