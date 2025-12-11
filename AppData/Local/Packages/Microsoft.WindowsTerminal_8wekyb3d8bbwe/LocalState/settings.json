@@ -113,6 +113,30 @@
             }
         ]
     },
-    "schemes": [],
+    "schemes": [
+        {
+            "name": "Material Dark",
+            "background": "#161616",
+            "foreground": "#eeffff",
+            "cursorColor": "#89ddff",
+            "selectionBackground": "#89ddff",
+            "black": "#546e7a",
+            "red": "#f07178",
+            "green": "#c3e88d",
+            "yellow": "#ffcb6b",
+            "blue": "#82aaff",
+            "purple": "#c792ea",
+            "cyan": "#89ddff",
+            "white": "#eeffff",
+            "brightBlack": "#65737e",
+            "brightRed": "#ff5370",
+            "brightGreen": "#c3e88d",
+            "brightYellow": "#ffcb6b",
+            "brightBlue": "#82aaff",
+            "brightPurple": "#c792ea",
+            "brightCyan": "#89ddff",
+            "brightWhite": "#ffffff"
+        }
+    ],
     "themes": []
 }
