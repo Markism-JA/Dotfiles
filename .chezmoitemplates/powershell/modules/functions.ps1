@@ -64,7 +64,7 @@ function Search-History
 function Search-GitLog
 {
     # Check if in a git repo
-    if (-not (git rev-parse --git-dir 2>$null))
+    if (-not (git rev-parse --git-dir 2 Out-File $null))
     { 
         Write-Error "Not in a git repository."
         return 
@@ -111,7 +111,7 @@ function Search-GitLog
 
 function Search-GitStatus
 {
-    if (-not (git rev-parse --git-dir 2>$null))
+    if (-not (git rev-parse --git-dir 2 Out-File $null))
     { 
         Write-Error "Not in a git repository."
         return 
