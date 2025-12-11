@@ -1,0 +1,62 @@
+[colors]
+background = '#161616'
+foreground = '#eeffff'
+
+# Cursor colors
+cursor_bg = '#89ddff'
+cursor_border = '#89ddff'
+cursor_fg = '#161616' # Black text helps readability on the bright cyan cursor
+
+# Normal colors (0-7)
+ansi = [
+    '#546e7a', # Black
+    '#f07178', # Red
+    '#c3e88d', # Green
+    '#ffcb6b', # Yellow
+    '#82aaff', # Blue
+    '#c792ea', # Magenta
+    '#89ddff', # Cyan
+    '#eeffff', # White
+]
+
+# Bright colors (8-15)
+brights = [
+    '#65737e',
+    '#ff5370',
+    '#c3e88d',
+    '#ffcb6b',
+    '#82aaff',
+    '#c792ea',
+    '#89ddff',
+    '#ffffff',
+]
+
+[colors.tab_bar]
+background = "#161616"
+
+[colors.tab_bar.active_tab]
+bg_color = '#89ddff'
+fg_color = '#161616'
+intensity = 'Bold'
+italic = false
+strikethrough = false
+underline = 'None'
+
+[colors.tab_bar.inactive_tab]
+bg_color = '#161616'
+fg_color = '#546e7a'
+intensity = 'Normal'
+italic = false
+strikethrough = false
+underline = 'None'
+
+[colors.tab_bar.new_tab]
+bg_color = '#161616'
+fg_color = '#eeffff'
+intensity = 'Normal'
+italic = false
+strikethrough = false
+underline = 'None'
+
+[metadata]
+name = 'Material Dark'
