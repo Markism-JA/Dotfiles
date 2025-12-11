@@ -44,7 +44,7 @@ return
 ; =================================================================================
 
 ; --- Application Hotkeys ---
-#Enter::Run, "wt.exe"
+#Enter::Run, "wezterm-gui.exe"
 #c::Run, "code"
 #w::Run, "firefox.exe"
 ^#x::Run, "notepad.exe"
