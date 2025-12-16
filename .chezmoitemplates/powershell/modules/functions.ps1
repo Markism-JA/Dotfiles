@@ -1,9 +1,10 @@
-function Search-History
-{
+# BUG: this does not work properly on windows, but it works in linux pwsh 7. IDK why.
+
+function Search-History {
     $historyPath = (Get-PSReadLineOption).HistorySavePath
 
-    if (-not $historyPath -or -not (Test-Path $historyPath))
-    { return 
+    if (-not $historyPath -or -not (Test-Path $historyPath)) {
+        return 
     }
 
     $line = $null
@@ -16,8 +17,8 @@ function Search-History
     [System.Collections.ArrayList]$uniqueHistory = $rawHistory[($rawHistory.Count - 1)..0] | Select-Object -Unique
 
     $totalCount = $uniqueHistory.Count
-    if ($totalCount -eq 0)
-    { return 
+    if ($totalCount -eq 0) {
+        return 
     }
 
     # 3. Format lines
@@ -39,8 +40,7 @@ function Search-History
     )
 
     $selectedLines = $historyForFzf | fzf $fzfArgs
-    if ($selectedLines)
-    {
+    if ($selectedLines) {
         $commands = $selectedLines -split "`n" | ForEach-Object {
             ($_ -split ' │ ', 2)[1]
         }
@@ -61,11 +61,9 @@ function Search-History
     Write-Host -NoNewline "$([char]27)[6 q"
 }
 
-function Search-GitLog
-{
+function Search-GitLog {
     # Check if in a git repo
-    if (-not (git rev-parse --git-dir 2 Out-File $null))
-    { 
+    if (-not (git rev-parse --git-dir 2 Out-File $null)) { 
         Write-Error "Not in a git repository."
         return 
     }
@@ -74,8 +72,8 @@ function Search-GitLog
     $format = '%C(bold blue)%h%C(reset) - %C(cyan)%ad%C(reset) %C(yellow)%d%C(reset) %s [%an]'
     $logs = @(git log --no-show-signature --color=always --format=format:$format --date=short)
     
-    if ($logs.Count -eq 0)
-    { return 
+    if ($logs.Count -eq 0) {
+        return 
     }
 
     # 2. Define fzf arguments (Blank Query)
@@ -92,12 +90,10 @@ function Search-GitLog
     # 3. Run FZF
     $selectedLines = $logs | fzf $fzfArgs
 
-    if ($selectedLines)
-    {
+    if ($selectedLines) {
         $hashes = $selectedLines -split "`n" | ForEach-Object {
             # Extract hash safely
-            if ($_ -match '\b([a-f0-9]{7,})\b')
-            { 
+            if ($_ -match '\b([a-f0-9]{7,})\b') { 
                 $matches[1] 
             }
         }
@@ -109,18 +105,16 @@ function Search-GitLog
     }
 }
 
-function Search-GitStatus
-{
-    if (-not (git rev-parse --git-dir 2 Out-File $null))
-    { 
+function Search-GitStatus {
+    if (-not (git rev-parse --git-dir 2 Out-File $null)) { 
         Write-Error "Not in a git repository."
         return 
     }
 
     # 1. Get Status Data
     $status = @(git -c color.status=always status --short)
-    if ($status.Count -eq 0)
-    { return 
+    if ($status.Count -eq 0) {
+        return 
     }
 
     # 2. Define fzf arguments (Blank Query)
@@ -138,14 +132,11 @@ function Search-GitStatus
     # 3. Run FZF
     $selectedLines = $status | fzf $fzfArgs
 
-    if ($selectedLines)
-    {
+    if ($selectedLines) {
         $paths = $selectedLines -split "`n" | ForEach-Object {
-            if ($_ -match '^R\s+.* -> (.+)$')
-            { 
+            if ($_ -match '^R\s+.* -> (.+)$') { 
                 $matches[1] 
-            } else
-            { 
+            } else { 
                 $_.Substring(3) 
             }
         }
