@@ -1,10 +1,8 @@
-" LazyVim key mappings for Jetbrains IDEs.
-
-" LazyVim default settings
-" https://www.lazyvim.org/configuration/general
+nnoremap <C-f> <Action>(Find)
+vnoremap <C-f> <Action>(Find)
 
 let mapleader=" "
-let maplocalleader="\\"
+let maplocalleader=" "
 
 " Confirm to save changes before exiting modified buffer
 set formatoptions=jcroqlnt
@@ -759,3 +757,20 @@ vnoremap < <gv
 
 " There are several more Neovim mappings that need to be ported.
 
+nnoremap <leader>h :action ShowBookmarks<CR>
+
+" Assigning to keys (The <leader>H [number] logic)
+" JetBrains uses 'Mnemonics' (0-9) for this.
+nnoremap <leader>H1 :action ToggleBookmark1<CR>
+nnoremap <leader>H2 :action ToggleBookmark2<CR>
+nnoremap <leader>H3 :action ToggleBookmark3<CR>
+nnoremap <leader>H4 :action ToggleBookmark4<CR>
+nnoremap <leader>H5 :action ToggleBookmark5<CR>
+
+" Quick Jump to assigned keys
+" This allows you to jump to the assigned files using the numbers
+nnoremap <leader>1 :action GotoBookmark1<CR>
+nnoremap <leader>2 :action GotoBookmark2<CR>
+nnoremap <leader>3 :action GotoBookmark3<CR>
+nnoremap <leader>4 :action GotoBookmark4<CR>
+nnoremap <leader>5 :action GotoBookmark5<CR>
