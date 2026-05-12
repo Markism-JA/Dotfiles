@@ -61,32 +61,24 @@ hl.workspace_rule({
 	monitor = "eDP-1",
 })
 
-hl.cfg.debug.enable_stdout_logs = 0
-hl.cfg.decoration.blur.enabled = false
-hl.cfg.animations.enabled = true
-hl.cfg.decoration.blur.xray = false
-
 hl.config({
 	xwayland = {
 		force_zero_scaling = true,
 	},
 })
 
-hl.animation("fade", false)
-hl.animation("fadeDim", false)
-hl.animation("workspaces", false)
-
-hl.cfg.input.touchpad.natural_scroll = false
-
-hl.cfg.general.gaps_in = 4
-hl.cfg.general.gaps_out = 5
+hl.config({
+	input = {
+		natural_scroll = false,
+	},
+})
 
 hl.device({
 	name = "elan0522:01-04f3:31c3-touchpad",
 	sensitivity = 0.5,
 })
 
-hl.cfg.decoration = {
+hl.decoration = {
 	rounding = 12,
 	blur = {
 		enabled = true,
@@ -98,6 +90,3 @@ hl.cfg.decoration = {
 		new_optimizations = true,
 	},
 }
-
-hl.cfg.misc.on_focus_under_fullscreen = 1
-hl.cfg.misc.middle_click_paste = false
