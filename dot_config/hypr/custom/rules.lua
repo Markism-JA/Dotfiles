@@ -56,7 +56,6 @@ hl.window_rule({
 	center = true,
 	workspace = "special:gcal silent", -- Sets workspace, supports silent suffix [cite: 420]
 	size = "1300 950",
-	opacity = "0.90 0.90", -- Sets additional opacity multiplier [cite: 441]
 })
 
 hl.window_rule({
@@ -74,7 +73,6 @@ hl.window_rule({
 
 hl.window_rule({
 	match = { class = "^([Dd]iscord|[Ww]ebCord|[Vv]esktop)$" },
-	opacity = "0.85 0.85",
 })
 
 --# Workspace 10 (Communication / Email)
@@ -122,7 +120,6 @@ hl.window_rule({ match = { class = "^(com.github.th_ch.youtube_music)$" }, works
 hl.window_rule({
 	match = { class = "^([Ss]potify)$" },
 	workspace = "7",
-	opacity = "0.85 0.85",
 })
 
 --# Workspace 8 (Games / Launchers)

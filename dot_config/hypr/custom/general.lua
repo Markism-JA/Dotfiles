@@ -77,16 +77,3 @@ hl.device({
 	name = "elan0522:01-04f3:31c3-touchpad",
 	sensitivity = 0.5,
 })
-
-hl.decoration = {
-	rounding = 12,
-	blur = {
-		enabled = true,
-		size = 10,
-		passes = 4,
-		brightness = 1.1,
-		contrast = 0.9,
-		vibrancy = 0.15,
-		new_optimizations = true,
-	},
-}
