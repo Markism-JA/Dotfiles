@@ -77,3 +77,8 @@ hl.device({
 	name = "elan0522:01-04f3:31c3-touchpad",
 	sensitivity = 0.5,
 })
+
+hl.animation({
+	leaf = "workspaces",
+	enabled = false,
+})
