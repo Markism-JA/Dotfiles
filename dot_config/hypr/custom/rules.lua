@@ -20,6 +20,12 @@ hl.window_rule({
 	float = true,
 })
 
+--# System Tools
+hl.window_rule({
+	match = { class = "^(org.kde.plasma-systemmonitor)$" },
+	float = true,
+})
+
 hl.window_rule({
 	match = { class = "jetbrains-toolbox" },
 	float = true,
