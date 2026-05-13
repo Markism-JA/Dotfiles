@@ -16,8 +16,6 @@ hl.bind(mod .. " + SHIFT + F", hl.dsp.window.float({ action = "toggle" }))
 hl.unbind(mod .. " + E")
 hl.bind(mod .. " + E", hl.dsp.exec_cmd(settings.fileManager))
 
-hl.unbind("CTRL + SHIFT + Escape")
-
 --##! Shell
 hl.bind("ALT + Space", hl.dsp.exec_cmd("albert toggle"))
 
