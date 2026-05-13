@@ -24,6 +24,8 @@ hl.window_rule({
 hl.window_rule({
 	match = { class = "^(org.kde.plasma-systemmonitor)$" },
 	float = true,
+	center = true,
+	size = "930 650",
 })
 
 hl.window_rule({
