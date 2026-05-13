@@ -71,6 +71,13 @@ hl.window_rule({
 	workspace = "special:cap silent",
 })
 
+hl.window_rule({
+	match = { class = "^(discord)$" },
+	float = true,
+	center = true,
+	workspace = "special:dc silent",
+})
+
 --# Electron / Discord
 hl.window_rule({
 	match = { class = "^(electron)$", title = "^$" },

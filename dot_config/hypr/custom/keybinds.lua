@@ -81,5 +81,8 @@ hl.bind("CTRL + " .. mod .. " + C", hl.dsp.workspace.toggle_special("gcal"))
 -- Messenger
 hl.bind("CTRL + " .. mod .. " + M", hl.dsp.workspace.toggle_special("cap"))
 
+-- Discord
+hl.bind("CTRL + " .. mod .. " + D", hl.dsp.workspace.toggle_special("dc"))
+
 -- Browser fallback
 hl.bind(mod .. " + Z", hl.dsp.exec_cmd("zen-browser"))
