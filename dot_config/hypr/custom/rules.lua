@@ -59,7 +59,7 @@ hl.window_rule({ match = { title = "^(Picture-in-Picture)$" }, move = "72% 7%" }
 
 --# Special Workspaces (Calendar & Messengers)
 hl.window_rule({
-	match = { title = "^(GoogleCalendarDark)$" },
+	match = { class = "googlecalendardark-nativefier-e22938" },
 	float = true,
 	center = true,
 	workspace = "special:gcal silent", -- Sets workspace, supports silent suffix [cite: 420]
