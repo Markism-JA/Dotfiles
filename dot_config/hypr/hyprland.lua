@@ -1,44 +1,42 @@
--- This file sources other files in `hyprland` and `custom` folders
--- You wanna add your stuff in files in `custom`
+local HOME = os.getenv("HOME")
 
--- Internal stuff --
-require("hyprland.lib")
-require("hyprland.services")
+hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
 
--- Environment variables --
-require("hyprland.env")
-if is_file_exists(HOME .. "/.config/hypr/custom/env.lua") then
-    require("custom.env")
-end
+hl.env("QT_QPA_PLATFORMTHEME", "qt7ct")
+hl.env("QT_QPA_PLATFORM", "wayland;xcb")
+hl.env("QT_QPA_PLATFORMTHEME", "kde")
+hl.env("XDG_MENU_PREFIX", "plasma-")
 
--- Default configurations --
-require("hyprland.execs")
-require("hyprland.general")
-require("hyprland.rules")
-require("hyprland.colors")
-require("hyprland.keybinds")
-
--- Custom configurations --
-if is_file_exists(HOME .. "/.config/hypr/custom/execs.lua") then
-    require("custom.execs")
-end
-if is_file_exists(HOME .. "/.config/hypr/custom/general.lua") then
-    require("custom.general")
-end
-if is_file_exists(HOME .. "/.config/hypr/custom/rules.lua") then
-    require("custom.rules")
-end
-if is_file_exists(HOME .. "/.config/hypr/custom/keybinds.lua") then
-    require("custom.keybinds")
+local function is_file_exists(path)
+	local f = io.open(path, "r")
+	if f then
+		f:close()
+		return true
+	else
+		return false
+	end
 end
 
--- nwg-displays support --
-if is_file_exists(HOME .. "/.config/hypr/workspaces.lua") then
-    require("workspaces")
+if is_file_exists(HOME .. "/.config/hypr/execs.lua") then
+	require("execs")
 end
+
+if is_file_exists(HOME .. "/.config/hypr/rules.lua") then
+	require("general")
+end
+
+if is_file_exists(HOME .. "/.config/hypr/rules.lua") then
+	require("rules")
+end
+
+if is_file_exists(HOME .. "/.config/hypr/keybinds.lua") then
+	require("keybinds")
+end
+
 if is_file_exists(HOME .. "/.config/hypr/monitors.lua") then
-    require("monitors")
+	require("monitors")
 end
 
--- Shell overrides --
-require("hyprland.shellOverrides.main")
+if is_file_exists(HOME .. "/.config/hypr/workspaces.lua") then
+	require("workspaces")
+end

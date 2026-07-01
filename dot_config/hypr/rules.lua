@@ -1,6 +1,17 @@
 -- ##! Window Rules
 
 --# Media / Viewers
+--
+hl.config({
+	windowrules = {
+		"float, class:^(gpu-screen-recorder-ui)$",
+		"center, class:^(gpu-screen-recorder-ui)$",
+		"suppressevent fullscreen, class:^(gpu-screen-recorder-ui)$",
+		"size 100% 100%, class:^(gpu-screen-recorder-ui)$",
+		"monitor 0, class:^(gpu-screen-recorder-ui)$",
+	},
+})
+
 hl.window_rule({
 	match = { class = "^(imv)$" },
 	float = true, -- Floats a window [cite: 420]
@@ -139,9 +150,9 @@ hl.window_rule({
 
 --# Workspace 8 (Games / Launchers)
 hl.window_rule({ match = { class = "^([Ss]team)$" }, workspace = "8" })
-hl.window_rule({ match = { title = "^(SKlauncher 3.2.10 build.473)$" }, workspace = "8" })
-hl.window_rule({ match = { class = "^Minecraft.*" }, workspace = "8" })
-hl.window_rule({ match = { title = "^SKlauncher.*" }, workspace = "8" })
+-- hl.window_rule({ match = { title = "^(SKlauncher 3.2.10 build.473)$" }, workspace = "8" })
+-- hl.window_rule({ match = { class = "^Minecraft.*" }, workspace = "8" })
+-- hl.window_rule({ match = { title = "^SKlauncher.*" }, workspace = "8" })
 hl.window_rule({ match = { class = "^(org.vinegarhq.Sober)$" }, workspace = "8" })
 hl.window_rule({ match = { class = "^(heroic)$" }, workspace = "8" })
 
