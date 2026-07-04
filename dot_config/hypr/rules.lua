@@ -95,16 +95,7 @@ hl.window_rule({
 	float = true,
 	center = true,
 	workspace = "special:dc silent",
-})
-
---# Electron / Discord
-hl.window_rule({
-	match = { class = "^(electron)$", title = "^$" },
-	workspace = "special:garbage silent",
-})
-
-hl.window_rule({
-	match = { class = "^([Dd]iscord|[Ww]ebCord|[Vv]esktop)$" },
+	size = "1300 950",
 })
 
 --# Workspace 10 (Communication / Email)
