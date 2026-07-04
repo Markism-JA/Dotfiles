@@ -1,16 +1,6 @@
 -- ##! Window Rules
 
 --# Media / Viewers
---
-hl.config({
-	windowrules = {
-		"float, class:^(gpu-screen-recorder-ui)$",
-		"center, class:^(gpu-screen-recorder-ui)$",
-		"suppressevent fullscreen, class:^(gpu-screen-recorder-ui)$",
-		"size 100% 100%, class:^(gpu-screen-recorder-ui)$",
-		"monitor 0, class:^(gpu-screen-recorder-ui)$",
-	},
-})
 
 hl.window_rule({
 	match = { class = "^(imv)$" },
