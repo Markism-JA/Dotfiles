@@ -2,7 +2,10 @@
 -- Push electron message to silent
 hl.window_rule({
 	match = { class = "^(electron)$", title = "^$" },
-	workspace = "special:garbage silent",
+	no_initial_focus = true,
+	float = true,
+	size = "1 1",
+	move = "-100 -100",
 })
 
 --# Media / Viewers
