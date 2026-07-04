@@ -105,16 +105,16 @@ hl.bind(
 	{ locked = true, description = "Utilities: Noctalia Fullscreen" }
 )
 
--- KDE Spectacle (Advanced GUI / Complex edits)
+-- Satty (Advanced GUI / Complex edits)
 hl.bind(
 	mod .. " + ALT + SHIFT + S",
-	hl.dsp.exec_cmd("spectacle --gui"),
-	{ description = "Utilities: Spectacle Advanced GUI" }
+	hl.dsp.exec_cmd('grim -g "$(slurp)" - | satty --filename -'),
+	{ description = "Utilities: Satty Advanced GUI Region" }
 )
 hl.bind(
 	mod .. " + ALT + SHIFT + P",
-	hl.dsp.exec_cmd("spectacle --fullscreen"),
-	{ locked = true, description = "Utilities: Spectacle Advanced Fullscreen" }
+	hl.dsp.exec_cmd("grim - | satty --filename -"),
+	{ locked = true, description = "Utilities: Satty Advanced GUI Fullscreen" }
 )
 
 -- Direct Low-Level Captures (Straight to file/clipboard via grim)

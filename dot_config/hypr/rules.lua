@@ -85,6 +85,12 @@ hl.window_rule({
 })
 
 hl.window_rule({
+	match = { class = "^(com.gabm.satty)$" },
+	float = true,
+	center = true,
+})
+
+hl.window_rule({
 	match = { class = "^(discord)$" },
 	float = true,
 	center = true,
