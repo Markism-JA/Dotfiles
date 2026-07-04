@@ -1,4 +1,9 @@
 -- ##! Window Rules
+-- Push electron message to silent
+hl.window_rule({
+	match = { class = "^(electron)$", title = "^$" },
+	workspace = "special:garbage silent",
+})
 
 --# Media / Viewers
 
