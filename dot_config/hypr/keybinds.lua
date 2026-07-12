@@ -49,7 +49,6 @@ hl.bind(
 	hl.dsp.exec_cmd(ipc .. "panel-toggle control-center"),
 	{ description = "Shell: Toggle control center" }
 )
-hl.bind(mod .. " + J", hl.dsp.exec_cmd(ipc .. "bar-toggle"), { description = "Shell: Toggle bar" })
 hl.bind(mod .. " + B", hl.dsp.exec_cmd(ipc .. "bar-toggle"), { description = "Shell: Toggle bar (Alt)" })
 
 -- Theme & Appearance
