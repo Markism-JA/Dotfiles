@@ -38,6 +38,11 @@ hl.bind(
 	hl.dsp.workspace.toggle_special("cap"),
 	{ description = "App: Messenger Scratchpad" }
 )
+hl.bind(
+	"CTRL + " .. mod .. " + I",
+	hl.dsp.workspace.toggle_special("insta"),
+	{ description = "App: Instagram Scratchpad" }
+)
 hl.bind("CTRL + " .. mod .. " + D", hl.dsp.workspace.toggle_special("dc"), { description = "App: Discord Scratchpad" })
 
 --##! Shell (Noctalia)
