@@ -5,7 +5,7 @@ end
 local settings = require("settings")
 local mod = settings.mainMod or "SUPER"
 local ipc = "noctalia msg "
-local hyprScripts = "$HOME/.config/hypr/hyprland/scripts"
+local hyprScripts = "$HOME/.config/hypr/scripts"
 local terminal = settings.terminal
 local fileManager = settings.fileManager
 local browser = settings.browser
