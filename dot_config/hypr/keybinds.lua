@@ -13,7 +13,7 @@ local officeSoftware = "libreoffice"
 
 --##! Apps
 hl.bind(mod .. " + Return", hl.dsp.exec_cmd(terminal), { description = "App: Terminal" })
-hl.bind(mod .. " + T", hl.dsp.exec_cmd(terminal))
+hl.bind(mod .. " + T", hl.dsp.exec_cmd("kitty"))
 hl.bind("CTRL + ALT + T", hl.dsp.exec_cmd(terminal))
 hl.bind(mod .. " + E", hl.dsp.exec_cmd(fileManager), { description = "App: File manager" })
 hl.bind(mod .. " + W", hl.dsp.exec_cmd(browser), { description = "App: Browser" })
