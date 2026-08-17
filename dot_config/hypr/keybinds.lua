@@ -45,6 +45,12 @@ hl.bind(
 )
 hl.bind("CTRL + " .. mod .. " + D", hl.dsp.workspace.toggle_special("dc"), { description = "App: Discord Scratchpad" })
 
+hl.bind(
+	"CTRL + " .. mod .. " + G",
+	hl.dsp.workspace.toggle_special("todo"),
+	{ description = "App: Todoist Scratchpad" }
+)
+
 --##! Shell (Noctalia)
 hl.bind(" ALT + Space", hl.dsp.exec_cmd(ipc .. "panel-toggle launcher"))
 

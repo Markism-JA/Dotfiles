@@ -68,6 +68,14 @@ hl.window_rule({ match = { title = "^(Picture-in-Picture)$" }, move = "72% 7%" }
 
 --# Special Workspaces (Calendar & Messengers)
 hl.window_rule({
+	match = { class = "todoist" },
+	float = true,
+	center = true,
+	workspace = "special:todo silent",
+	size = "1200 750",
+})
+
+hl.window_rule({
 	match = { class = "googlecalendardark-nativefier-e22938" },
 	float = true,
 	center = true,
