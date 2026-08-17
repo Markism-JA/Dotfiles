@@ -38,8 +38,13 @@ hl.window_rule({
 })
 
 hl.window_rule({
-	match = { class = "jetbrains-toolbox" },
+	match = {
+		initial_class = "jetbrains-toolbox",
+		initial_title = "Toolbox",
+	},
 	float = true,
+	size = "386 600",
+	move = "1425 40",
 })
 
 --# Productivity Apps
