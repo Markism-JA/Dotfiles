@@ -48,11 +48,6 @@ hl.window_rule({
 })
 
 --# Productivity Apps
-hl.window_rule({
-	match = { title = "^(Task Dashboard Pro)$" },
-	float = true,
-	center = true, -- Centers floating window on the monitor [cite: 420]
-})
 
 hl.window_rule({
 	match = { title = "^(ScholarFlow)$" },
@@ -81,7 +76,12 @@ hl.window_rule({
 })
 
 hl.window_rule({
-	match = { class = "googlecalendardark-nativefier-e22938" },
+	match = { title = "^(Task Dashboard Pro)$" },
+	float = true,
+	center = true,
+	workspace = "special:task silent",
+})
+
 	float = true,
 	center = true,
 	workspace = "special:gcal silent", -- Sets workspace, supports silent suffix [cite: 420]

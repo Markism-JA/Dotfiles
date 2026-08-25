@@ -51,6 +51,18 @@ hl.bind(
 	{ description = "App: Todoist Scratchpad" }
 )
 
+hl.bind(
+	"CTRL + " .. mod .. " + T",
+	hl.dsp.workspace.toggle_special("task"),
+	{ description = "App: Task Manager Scratchpad" }
+)
+
+hl.bind(
+	"CTRL + " .. mod .. " + T",
+	hl.dsp.exec_cmd("/home/marky/Scripts/bin/task-manager/launch_dashboard.sh"),
+	{ description = "App: Task Manager Scratchpad" }
+)
+
 --##! Shell (Noctalia)
 hl.bind(" ALT + Space", hl.dsp.exec_cmd(ipc .. "panel-toggle launcher"))
 

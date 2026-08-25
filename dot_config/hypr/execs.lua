@@ -11,4 +11,5 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd(
 		"env XDG_CURRENT_DESKTOP=Unity ELECTRON_USE_UBUNTU_INDICATOR=1 discord --enable-features=UseOzonePlatform,AppIndicator3 --ozone-platform=wayland --enable-gpu-rasterization"
 	)
+	hl.exec_cmd("/home/marky/Scripts/bin/task-manager/launch_dashboard.sh")
 end)
