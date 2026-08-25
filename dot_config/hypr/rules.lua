@@ -82,6 +82,8 @@ hl.window_rule({
 	workspace = "special:task silent",
 })
 
+hl.window_rule({
+	match = { class = "chrome-calendar.google.com__-Default" },
 	float = true,
 	center = true,
 	workspace = "special:gcal silent", -- Sets workspace, supports silent suffix [cite: 420]

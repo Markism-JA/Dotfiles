@@ -3,7 +3,9 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("hyprctl setcursor Adwaita 24")
 	hl.exec_cmd("kdeconnect-indicator")
 
-	hl.exec_cmd("google-calendar-nativefier-dark")
+	hl.exec_cmd(
+		"/usr/sbin/chromium --no-first-run --no-default-browser-check --class=google-calendar --app=https://calendar.google.com/ --user-data-dir=/home/marky/.local/share/deskify/profiles/google-calendar"
+	)
 	hl.exec_cmd("flatpak run com.sindresorhus.Caprine")
 	hl.exec_cmd(
 		"/home/marky/Application/AppImage/todoist.appimage --enable-features=UseOzonePlatform --ozone-platform=wayland"
