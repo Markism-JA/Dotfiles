@@ -125,15 +125,9 @@ hl.window_rule({ match = { class = "^(org.gnome.Evolution)$" }, workspace = "10"
 hl.window_rule({ match = { class = "^(org.telegram.desktop)$" }, workspace = "10" })
 hl.window_rule({ match = { class = "^(Prospect Mail)$" }, workspace = "10" })
 
-hl.window_rule({
-	match = { class = "^(messenger-nativefier-a7a11f)$" },
-	workspace = "10",
-	opacity = "0.90 0.90",
-})
-
 --# Workspace 2 (Browsers)
 hl.window_rule({ match = { class = "^([Mm]icrosoft-edge(-stable|-beta|-dev|-unstable)?)$" }, workspace = "2" })
-hl.window_rule({ match = { class = "^([Tt]horium-browser)$" }, workspace = "2" })
+hl.window_rule({ match = { class = "^([Tt]horium-browser)$" }, workspace = "3" })
 
 --# Workspace 3 (Files & Terminals)
 hl.window_rule({
