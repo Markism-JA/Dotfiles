@@ -98,17 +98,22 @@ hl.bind(
 -- )
 
 --##! Utilities
--- Clipboard & Emoji
+-- Clipboard
 hl.bind(
 	mod .. " + V",
 	hl.dsp.exec_cmd(ipc .. "panel-toggle clipboard"),
 	{ description = "Utilities: Toggle clipboard panel" }
 )
-hl.bind(
-	mod .. " + Period",
-	hl.dsp.exec_cmd(hyprScripts .. "/fuzzel-emoji.sh copy"),
-	{ description = "Utilities: Emoji picker" }
-)
+
+-- =============================================================================
+-- Focus Next / Previous Monitor
+-- =============================================================================
+
+-- Focus Next Monitor (Forward)
+hl.bind(mod .. " + Period", hl.dsp.focus({ monitor = "+1" }), { description = "Monitor: Focus next monitor" })
+
+-- Focus Previous Monitor (Backward)
+hl.bind(mod .. " + Comma", hl.dsp.focus({ monitor = "-1" }), { description = "Monitor: Focus previous monitor" })
 
 -- =========================================================
 -- SCREENSHOTS & ANNOTATION
