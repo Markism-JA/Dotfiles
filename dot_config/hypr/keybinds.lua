@@ -66,7 +66,6 @@ hl.bind(
 --##! Shell (Noctalia)
 hl.bind(" ALT + Space", hl.dsp.exec_cmd(ipc .. "panel-toggle launcher"))
 
-hl.bind(mod .. " + Tab", hl.dsp.exec_cmd(ipc .. "window-switcher"), { description = "Shell: Toggle window switcher" })
 hl.bind(
 	mod .. " + A",
 	hl.dsp.exec_cmd(ipc .. "panel-toggle control-center"),
@@ -268,13 +267,25 @@ hl.bind(mod .. " + P", hl.dsp.window.pin(), { description = "Window: Pin" })
 hl.bind(mod .. " + Semicolon", hl.dsp.layout("splitratio -0.1"), { repeating = true })
 hl.bind(mod .. " + Apostrophe", hl.dsp.layout("splitratio +0.1"), { repeating = true })
 
+-- =============================================================================
+-- Workspace-Local Alt-Tab (Respects Fullscreen / Maximize)
+-- =============================================================================
+
+-- Alt + Tab -> Cycle forward within current workspace
+hl.bind(
+	"ALT + Tab",
+	hl.dsp.window.cycle_next({ tiled = false, floating = false }),
+	{ description = "Cycle next window on workspace" }
+)
+
+-- Alt + Shift + Tab -> Cycle backward within current workspace
+hl.bind(
+	"ALT + SHIFT + Tab",
+	hl.dsp.window.cycle_next({ next = false }),
+	{ description = "Cycle previous window on workspace" }
+)
+
 -- Focus Movement (Vim & Arrows)
-hl.bind("ALT + Tab", function()
-	hl.dispatch(hl.dsp.window.cycle_next())
-end)
-hl.bind("ALT + SHIFT + Tab", function()
-	hl.dispatch(hl.dsp.window.cycle_next("prev"))
-end)
 
 local dirs = { Left = "l", Right = "r", Up = "u", Down = "d", H = "l", L = "r", K = "u", J = "d" }
 for key, dir in pairs(dirs) do

@@ -258,7 +258,8 @@ hl.config({
 		animate_mouse_windowdragging = false,
 		enable_swallow = false,
 		swallow_regex = "(foot|kitty|allacritty|Alacritty)",
-		on_focus_under_fullscreen = 2,
+		on_focus_under_fullscreen = 1,
+		exit_window_retains_fullscreen = true,
 		allow_session_lock_restore = true,
 		session_lock_xray = true,
 		initial_workspace_tracking = false,
@@ -268,6 +269,7 @@ hl.config({
 	binds = {
 		scroll_event_delay = 0,
 		hide_special_on_workspace_change = true,
+		movefocus_cycles_fullscreen = true,
 	},
 
 	cursor = {
