@@ -61,7 +61,6 @@ end
 local settings = require("settings")
 local mod = settings.mainMod or "SUPER"
 local noctalia_ipc = "noctalia msg "
-local hyprScripts = "$HOME/.config/hypr/scripts"
 local terminal = settings.terminal or "kitty"
 local fileManager = settings.fileManager or "nautilus"
 local browser = settings.browser or "google-chrome-stable"
@@ -626,10 +625,19 @@ hl.bind(mod .. " + Equal", function()
 end, { repeating = true, description = "Zoom In Desktop" })
 
 -- =============================================================================
--- 8. Screenshots & Capture Utilities
+-- 8. Screen Toolkit & Capture Utilities
 -- =============================================================================
 
-local grimhyprctl = "grim -o \"$(hyprctl activeworkspace -j | jq -r '.monitor')\""
+local stk_ipc = "noctalia msg plugin alexander/screen-toolkit:service all "
+
+-- -----------------------------------------------------------------------------
+-- 8.1 Primary Screen Toolkit HUD & Annotations
+-- -----------------------------------------------------------------------------
+
+-- Open / Toggle Screen Toolkit Panel (SUPER + P)
+hl.bind(mod .. " + ALT + P", hl.dsp.exec_cmd(stk_ipc .. "toggle"), {
+	description = "Toggle Screen Toolkit Panel",
+})
 
 -- Noctalia Screenshot
 hl.bind(
@@ -637,35 +645,58 @@ hl.bind(
 	hl.dsp.exec_cmd("noctalia msg screenshot-region"),
 	{ description = "Capture Screen Region (Noctalia)" }
 )
-hl.bind(
-	mod .. " + SHIFT + Print",
-	hl.dsp.exec_cmd("noctalia msg screenshot-region"),
-	{ description = "Capture Screen Region (Noctalia)" }
-)
-hl.bind(
-	mod .. " + ALT + Print",
-	hl.dsp.exec_cmd("noctalia msg screenshot-fullscreen"),
-	{ locked = true, description = "Capture Fullscreen (Noctalia)" }
-)
 
--- Satty Annotation GUI
-hl.bind(
-	mod .. " + ALT + SHIFT + S",
-	hl.dsp.exec_cmd('grim -g "$(slurp)" - | satty --filename -'),
-	{ description = "Capture & Annotate Region (Satty)" }
-)
-hl.bind(
-	mod .. " + ALT + SHIFT + P",
-	hl.dsp.exec_cmd("grim - | satty --filename -"),
-	{ locked = true, description = "Capture & Annotate Fullscreen (Satty)" }
-)
+-- Fullscreen Annotate (SUPER + ALT + Print)
+hl.bind(mod .. " + ALT + Print", hl.dsp.exec_cmd(stk_ipc .. "annotateFullscreen"), {
+	locked = true,
+	description = "Capture & Annotate Fullscreen",
+})
 
--- Quick Raw Captures
-hl.bind(
-	"Print",
-	hl.dsp.exec_cmd(grimhyprctl .. " - | wl-copy"),
-	{ locked = true, description = "Copy Active Screen to Clipboard" }
-)
+-- Focused Window Annotate (SUPER + ALT + SHIFT + S)
+hl.bind(mod .. " + ALT + SHIFT + S", hl.dsp.exec_cmd(stk_ipc .. "annotateWindow"), {
+	description = "Annotate Focused Window",
+})
+
+-- -----------------------------------------------------------------------------
+-- 8.2 Productivity, OCR & Visual Intelligence (Screen Toolkit IPC)
+-- -----------------------------------------------------------------------------
+
+-- Extract Text via OCR to Clipboard (SUPER + SHIFT + X)
+hl.bind(mod .. " + SHIFT + X", hl.dsp.exec_cmd(stk_ipc .. "ocr"), {
+	description = "Extract Text via OCR (Screen Toolkit)",
+})
+
+-- Search Region with Google Lens (SUPER + SHIFT + A)
+hl.bind(mod .. " + SHIFT + A", hl.dsp.exec_cmd(stk_ipc .. "lens"), {
+	description = "Search Screen Snippet (Google Lens)",
+})
+
+-- Pixel Color Picker (SUPER + SHIFT + C)
+hl.bind(mod .. " + SHIFT + C", hl.dsp.exec_cmd(stk_ipc .. "colorPicker"), {
+	description = "Pick Color to Clipboard (Screen Toolkit)",
+})
+
+-- QR / Barcode Scanner (SUPER + SHIFT + Q)
+hl.bind(mod .. " + SHIFT + Q", hl.dsp.exec_cmd(stk_ipc .. "qr"), {
+	description = "Scan QR / Barcode to Clipboard",
+})
+
+-- Measure Region Pixels (SUPER + SHIFT + D)
+hl.bind(mod .. " + SHIFT + D", hl.dsp.exec_cmd(stk_ipc .. "measure"), {
+	description = "Measure Region Dimensions",
+})
+
+-- -----------------------------------------------------------------------------
+-- 8.3 Quick Raw Clipboard Captures
+-- -----------------------------------------------------------------------------
+
+local grimhyprctl = "grim -o \"$(hyprctl activeworkspace -j | jq -r '.monitor')\""
+
+hl.bind("Print", hl.dsp.exec_cmd(grimhyprctl .. " - | wl-copy"), {
+	locked = true,
+	description = "Copy Active Screen to Clipboard",
+})
+
 hl.bind(
 	"CTRL + Print",
 	hl.dsp.exec_cmd(
@@ -673,36 +704,32 @@ hl.bind(
 			.. grimhyprctl
 			.. " $(xdg-user-dir PICTURES)/Screenshots/Screenshot_\"$(date '+%Y-%m-%d_%H.%M.%S')\".png"
 	),
-	{ locked = true, description = "Save Active Screen to Screenshots File" }
+	{
+		locked = true,
+		description = "Save Active Screen to File",
+	}
 )
 
--- Screen & Audio Recording (GPU Screen Recorder)
-hl.bind(mod .. " + SHIFT + R", hl.dsp.exec_cmd("gsr-ui"), { description = "Open Recording Dashboard Overlay" })
-hl.bind(
-	mod .. " + ALT + SHIFT + R",
-	hl.dsp.exec_cmd("gsr-ui-cli toggle-record"),
-	{ locked = true, description = "Start / Stop Recording" }
-)
-hl.bind(
-	mod .. " + ALT + SHIFT + Space",
-	hl.dsp.exec_cmd("gsr-ui-cli toggle-pause"),
-	{ locked = true, description = "Pause / Resume Recording" }
-)
+-- -----------------------------------------------------------------------------
+-- 8.4 GPU Screen Recorder (Main Camera / Webcam Overlay & Hardware Video)
+-- -----------------------------------------------------------------------------
 
--- Productivity & Screen Inspection
-hl.bind(
-	mod .. " + SHIFT + X",
-	hl.dsp.exec_cmd(
-		'grim -g "$(slurp)" "/tmp/ocr.png" && tesseract "/tmp/ocr.png" stdout | wl-copy && rm "/tmp/ocr.png"'
-	),
-	{ description = "Extract Text via OCR to Clipboard" }
-)
-hl.bind(
-	mod .. " + SHIFT + A",
-	hl.dsp.exec_cmd("pidof slurp || " .. hyprScripts .. "/snip_to_search.sh"),
-	{ description = "Search Screen Snippet (Google Lens)" }
-)
-hl.bind(mod .. " + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a"), { description = "Pick Screen Color to Clipboard" })
+-- Open GSR Dashboard Overlay (SUPER + SHIFT + R)
+hl.bind(mod .. " + SHIFT + R", hl.dsp.exec_cmd("gsr-ui"), {
+	description = "Open GPU Screen Recorder Overlay",
+})
+
+-- Toggle Hardware Screen + Camera Recording (SUPER + ALT + SHIFT + R)
+hl.bind(mod .. " + ALT + SHIFT + R", hl.dsp.exec_cmd("gsr-ui-cli toggle-record"), {
+	locked = true,
+	description = "GSR: Start / Stop Recording",
+})
+
+-- Pause / Resume Hardware Recording (SUPER + ALT + SHIFT + Space)
+hl.bind(mod .. " + ALT + SHIFT + Space", hl.dsp.exec_cmd("gsr-ui-cli toggle-pause"), {
+	locked = true,
+	description = "GSR: Pause / Resume Recording",
+})
 
 -- =============================================================================
 -- 9. Submaps & Modes: VM Passthrough
