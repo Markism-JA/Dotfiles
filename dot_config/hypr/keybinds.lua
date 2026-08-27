@@ -550,24 +550,36 @@ hl.bind(
 hl.bind(mod .. " + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a"), { description = "Pick Screen Color to Clipboard" })
 
 -- =============================================================================
--- 9. Submaps & Modes
+-- 9. Submaps & Modes: VM Passthrough
 -- =============================================================================
+local function toggle_vm_passthrough()
+	local current_submap = hl.get_current_submap()
 
+	if current_submap == "virtual-machine" then
+		hl.dispatch(hl.dsp.submap("reset"))
+		hl.notification.create({
+			text = "󰌌 VM Passthrough Disabled (Host Keys Active)",
+			timeout = 2000,
+			icon = "ok",
+		})
+	else
+		hl.dispatch(hl.dsp.submap("virtual-machine"))
+		hl.notification.create({
+			text = "󰨇 VM Passthrough Active (SUPER+CTRL+\\ to exit)",
+			timeout = 3000,
+			icon = "warning",
+		})
+	end
+end
+
+-- Define the Submap
 hl.define_submap("virtual-machine", function()
-	hl.bind(mod .. " + ALT + F1", function()
-		local currentsubmap = hl.get_current_submap()
-		if currentsubmap == "virtual-machine" then
-			hl.dispatch(
-				hl.dsp.exec_cmd("notify-send 'Exited Virtual Machine Submap' 'Keybinds re-enabled' -a 'Hyprland'")
-			)
-			hl.dispatch(hl.dsp.submap("reset"))
-		elseif currentsubmap == "" then
-			hl.dispatch(
-				hl.dsp.exec_cmd(
-					"notify-send 'Entered Virtual Machine Submap' 'Keybinds disabled. Press SUPER+ALT+F1 to exit' -a 'Hyprland'"
-				)
-			)
-			hl.dispatch(hl.dsp.submap("virtual-machine"))
-		end
-	end, { submap_universal = true, description = "Toggle Virtual Machine Input Passthrough Mode" })
+	hl.bind(
+		mod .. " + CTRL + Backslash",
+		toggle_vm_passthrough,
+		{ submap_universal = true, description = "Exit VM Input Passthrough" }
+	)
 end)
+
+-- Root-level bind to enter
+hl.bind(mod .. " + CTRL + Backslash", toggle_vm_passthrough, { description = "Toggle VM Input Passthrough" })
