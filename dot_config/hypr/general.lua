@@ -230,6 +230,22 @@ hl.animation({
 	bezier = "standardDecel",
 })
 
+hl.animation({ leaf = "fade", enabled = false })
+
+hl.animation({
+	leaf = "windows",
+	enabled = true,
+	speed = 2,
+	bezier = "default",
+	style = "popin 95%",
+})
+
+hl.animation({
+	leaf = "windowsMove",
+	enabled = true,
+	speed = 2,
+	bezier = "default",
+})
 hl.config({
 	input = {
 		kb_layout = "us",
