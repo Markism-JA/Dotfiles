@@ -1,17 +1,29 @@
--- Workspaces 1 to 7 on HDMI-A-1 (External Monitor)
-for ws = 1, 7 do
-	hl.workspace_rule({
-		workspace = tostring(ws),
-		monitor = "HDMI-A-1",
-		persistent = true,
-	})
-end
+local utils = require("utils")
 
--- Workspaces 8 to 10 on eDP-1 (Laptop / Built-in Display)
-for ws = 8, 10 do
-	hl.workspace_rule({
-		workspace = tostring(ws),
-		monitor = "eDP-1",
-		persistent = true,
-	})
+local has_hdmi = utils.is_monitor_connected("HDMI-A-1")
+
+if has_hdmi then
+	for ws = 1, 7 do
+		hl.workspace_rule({
+			workspace = tostring(ws),
+			monitor = "HDMI-A-1",
+			persistent = true,
+		})
+	end
+
+	for ws = 8, 10 do
+		hl.workspace_rule({
+			workspace = tostring(ws),
+			monitor = "eDP-1",
+			persistent = true,
+		})
+	end
+else
+	for ws = 1, 10 do
+		hl.workspace_rule({
+			workspace = tostring(ws),
+			monitor = "eDP-1",
+			persistent = true,
+		})
+	end
 end
