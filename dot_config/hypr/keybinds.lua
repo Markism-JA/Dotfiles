@@ -1,3 +1,6 @@
+local ws_aliases = require("modules.ws_aliases")
+local window_tags = require("modules.window_tags")
+
 local function workspace_in_group(i)
 	return tostring(i)
 end
@@ -453,6 +456,81 @@ hl.bind(mod .. " + SHIFT + mouse_up", hl.dsp.layout("focus l"), { description = 
 hl.bind(mod .. " + SHIFT + mouse_down", hl.dsp.layout("focus r"), { description = "Scroll Ribbon Right / Next Window" })
 
 -- Monocle
+-- =============================================================================
+-- 6.1 Semantic Workspace Navigation & Offloading (Workspaces 5 - 10)
+-- =============================================================================
+
+-- Fast Jumps (mod + ALT + <Key>)
+hl.bind(mod .. " + ALT + B", function()
+	ws_aliases.focus_to("backend")
+end, { description = "Focus Workspace 5 (Backend/DB)" })
+
+hl.bind(mod .. " + ALT + R", function()
+	ws_aliases.focus_to("research")
+end, { description = "Focus Workspace 6 (Research/Tabs)" })
+
+hl.bind(mod .. " + ALT + V", function()
+	ws_aliases.focus_to("media")
+end, { description = "Focus Workspace 7 (Media/Video)" })
+
+hl.bind(mod .. " + ALT + U", function()
+	ws_aliases.focus_to("aux")
+end, { description = "Focus Workspace 8 (Laptop Strip)" })
+
+hl.bind(mod .. " + ALT + Y", function()
+	ws_aliases.focus_to("monitor")
+end, { description = "Focus Workspace 9 (Observability/Logs)" })
+
+hl.bind(mod .. " + ALT + BackSpace", function()
+	ws_aliases.focus_to("staging")
+end, { description = "Focus Workspace 10 (Staging/Dump)" })
+
+-- Direct Offloading (CTRL + mod + ALT + <Key>)
+hl.bind("CTRL + " .. mod .. " + ALT + B", function()
+	ws_aliases.send_to("backend", false)
+end, { description = "Send Window to Workspace 5 (Backend/DB)" })
+
+hl.bind("CTRL + " .. mod .. " + ALT + R", function()
+	ws_aliases.send_to("research", false)
+end, { description = "Send Window to Workspace 6 (Research)" })
+
+hl.bind("CTRL + " .. mod .. " + ALT + M", function()
+	ws_aliases.send_to("media", false)
+end, { description = "Send Window to Workspace 7 (Media)" })
+
+hl.bind("CTRL + " .. mod .. " + ALT + U", function()
+	ws_aliases.send_to("aux", false)
+end, { description = "Send Window to Workspace 8 (Laptop Strip)" })
+
+hl.bind("CTRL + " .. mod .. " + ALT + Y", function()
+	ws_aliases.send_to("monitor", false)
+end, { description = "Send Window to Workspace 9 (Logs/Metrics)" })
+
+hl.bind("CTRL + " .. mod .. " + ALT + BackSpace", function()
+	ws_aliases.send_to("staging", false)
+end, { description = "Dump Window to Workspace 10 (Staging)" })
+
+-- =============================================================================
+-- 6.2 Window Tagging & Staging Pipelines
+-- =============================================================================
+
+-- Toggle Tags
+hl.bind("CTRL + " .. mod .. " + U", function()
+	window_tags.toggle_tag("reference")
+end, { description = "Toggle 'reference' Tag on Window" })
+
+hl.bind("CTRL + " .. mod .. " + Y", function()
+	window_tags.toggle_tag("monitor")
+end, { description = "Toggle 'monitor' Tag on Window" })
+
+hl.bind("CTRL + " .. mod .. " + BackSpace", function()
+	window_tags.clear_tags()
+end, { description = "Clear Tags on Active Window" })
+
+-- Batch Pipeline (Gather to Secondary Screen)
+hl.bind("CTRL + " .. mod .. " + SHIFT + U", function()
+	window_tags.gather_tagged("reference", ws_aliases.resolve("aux"))
+end, { description = "Gather Reference Windows to Laptop Screen (WS 8)" })
 
 -- =============================================================================
 -- 7. Media & Hardware
