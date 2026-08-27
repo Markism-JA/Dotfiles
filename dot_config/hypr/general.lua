@@ -298,4 +298,79 @@ hl.config({
 	xwayland = {
 		force_zero_scaling = true,
 	},
+
+	dwindle = {
+		force_split = 0,
+		preserve_split = false,
+		smart_split = false,
+		smart_resizing = true,
+		permanent_direction_override = false,
+		special_scale_factor = 1,
+		split_width_multiplier = 1.0,
+		use_active_for_splits = true,
+		default_split_ratio = 1.0,
+		split_bias = 0,
+		precise_mouse_move = false,
+	},
+
+	scrolling = {
+		-- Automatically span 100% width if only one column exists on the workspace
+		fullscreen_on_one_column = true,
+
+		-- 50% screen width default lets 2 columns sit side-by-side cleanly on 16:9 displays
+		column_width = 0.5,
+
+		-- 1 = "fit" brings partially hidden columns just inside the viewport without jarring jumps;
+		-- Use 0 ("center") if you prefer an ultrawide/cinema camera tracking feel
+		focus_fit_method = 1,
+
+		-- Automatically scroll the camera ribbon when focus changes
+		follow_focus = true,
+
+		-- Require 40% of a column to be visible before camera triggers smooth auto-scroll
+		follow_min_visible = 0.4,
+
+		-- Standard preset column steps for quick toggling (1/3, 1/2, 2/3, Full)
+		explicit_column_widths = "0.333, 0.5, 0.667, 1.0",
+
+		-- Prevent accidental wrap-around disorientation when reaching strip edges
+		wrap_focus = false,
+		wrap_swapcol = false,
+
+		-- Windows append downwards in a vertical reel
+		direction = "right",
+	},
+
+	general = {
+		layout = "dwindle",
+	},
+
+	master = {
+		-- master window takes up 60% of the screen width by default
+		mfact = 0.60,
+
+		-- Primary master window anchored on the left
+		orientation = "left",
+
+		-- New windows spawn in the slave stack instead of stealing master focus
+		new_status = "slave",
+
+		-- Place new slave windows at the top of the stack for immediate visibility
+		new_on_top = true,
+
+		-- Insert new windows adjacent to the currently focused window in the stack
+		new_on_active = "after",
+
+		focus_master_on_close = false,
+
+		always_keep_position = false,
+
+		-- Intuitive mouse resizing and drag-and-drop placement
+		smart_resizing = true,
+		drop_at_cursor = true,
+
+		-- Allow side-by-side splits in the master pane if you add a second master
+		allow_small_split = true,
+		special_scale_factor = 0.95,
+	},
 })
