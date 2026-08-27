@@ -9,6 +9,12 @@ hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 hl.env("QT_QPA_PLATFORMTHEME", "kde")
 hl.env("XDG_MENU_PREFIX", "plasma-")
 
+hl.permission({
+	binary = "/usr/(bin|local/bin)/hyprpm",
+	type = "plugin",
+	mode = "allow",
+})
+
 local function is_file_exists(path)
 	local f = io.open(path, "r")
 	if f then
