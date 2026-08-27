@@ -277,6 +277,18 @@ hl.bind(
 hl.bind(mod .. " + Period", hl.dsp.focus({ monitor = "+1" }), { description = "Focus Next Monitor" })
 hl.bind(mod .. " + Comma", hl.dsp.focus({ monitor = "-1" }), { description = "Focus Previous Monitor" })
 
+-- Multi-Monitor Window Move (Follows Focus)
+hl.bind(
+	mod .. " + SHIFT + Period",
+	hl.dsp.window.move({ monitor = "+1", follow = true }),
+	{ description = "Move Window to Next Monitor" }
+)
+hl.bind(
+	mod .. " + SHIFT + Comma",
+	hl.dsp.window.move({ monitor = "-1", follow = true }),
+	{ description = "Move Window to Previous Monitor" }
+)
+
 -- =============================================================================
 -- 5. Workspaces & Scratchpads
 -- =============================================================================
