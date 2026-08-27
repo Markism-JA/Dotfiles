@@ -90,6 +90,32 @@ hl.config({
 -- 10. Workspace Overview (GloView)
 -- =============================================================================
 
+-- Overview Toggles & Views
 hl.bind(mod .. " + TAB", hl.plugin.gloview.toggle, { description = "Toggle Overview" })
+hl.bind(mod .. " + SHIFT + TAB", hl.plugin.gloview.desktop, { description = "Toggle Overview Desktop Flip" })
+hl.bind(
+	mod .. " + CTRL + TAB",
+	hl.plugin.gloview.allworkspaces,
+	{ description = "Toggle Overview All-Workspaces Expo" }
+)
+
+-- Step Strip Cards (Inside & Outside Overview)
 hl.bind(mod .. " + bracketright", hl.plugin.gloview.next, { description = "Step Workspace Next" })
 hl.bind(mod .. " + bracketleft", hl.plugin.gloview.prev, { description = "Step Workspace Prev" })
+
+-- Direct Workspace Jumps (1 - 10 & Numpad)
+local numpad_keys = { 87, 88, 89, 83, 84, 85, 79, 80, 81, 90 }
+
+for i = 1, 10 do
+	local bind_key = i % 10
+
+	-- SUPER + Number (1-9, 0)
+	hl.bind(mod .. " + " .. bind_key, function()
+		hl.plugin.gloview.setworkspace(i)
+	end, { description = "GloView: Switch Workspace " .. i })
+
+	-- SUPER + Numpad
+	hl.bind(mod .. " + code:" .. numpad_keys[i], function()
+		hl.plugin.gloview.setworkspace(i)
+	end, { description = "GloView: Switch Workspace (Numpad " .. i .. ")" })
+end
