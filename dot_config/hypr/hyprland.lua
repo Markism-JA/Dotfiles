@@ -1,9 +1,11 @@
 local HOME = os.getenv("HOME")
 
+-- Ozone / Wayland Hints
 hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
 
-hl.env("QT_QPA_PLATFORMTHEME", "qt7ct")
+-- Qt Theming & Wayland backend
 hl.env("QT_QPA_PLATFORM", "wayland;xcb")
+hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 hl.env("QT_QPA_PLATFORMTHEME", "kde")
 hl.env("XDG_MENU_PREFIX", "plasma-")
 
