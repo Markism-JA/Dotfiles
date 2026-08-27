@@ -368,8 +368,50 @@ hl.bind(
 -- =============================================================================
 -- 6. Workspace Layouts
 -- =============================================================================
+--- Set layout dynamically on the active workspace
+---@param layout "dwindle" | "master" | "scrolling" | "monocle"
+local function set_active_layout(layout)
+	local w = hl.get_active_special_workspace() or hl.get_active_workspace()
+	if not w then
+		return
+	end
+
+	local target_ws = w.special and tostring(w.name) or tostring(w.id)
+
+	hl.workspace_rule({
+		workspace = target_ws,
+		layout = layout,
+	})
+
+	hl.notification.create({
+		text = "Workspace " .. target_ws .. " -> " .. layout:upper(),
+		timeout = 1500,
+		icon = "ok",
+	})
+end
+
+-- =============================================================================
+-- Direct Layout Selectors (Working)
+-- =============================================================================
+
+hl.bind(mod .. " + ALT + D", function()
+	set_active_layout("dwindle")
+end, { description = "Set Layout: Dwindle" })
+
+hl.bind(mod .. " + ALT + T", function()
+	set_active_layout("master")
+end, { description = "Set Layout: Master (Tile/Stack)" })
+
+hl.bind(mod .. " + ALT + S", function()
+	set_active_layout("scrolling")
+end, { description = "Set Layout: Scrolling" })
+
+hl.bind(mod .. " + ALT + O", function()
+	set_active_layout("monocle")
+end, { description = "Set Layout: Monocle (One/Deck)" })
 
 -- Dwindle
+-- Most of the default works with dwindle already cause its the default standard tilling layout.
 
 -- Master
 
