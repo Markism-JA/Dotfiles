@@ -28,7 +28,7 @@ hl.config({
 			strip_gap = 18,
 			strip_card_round = 10,
 
-			focus_follows_mouse = 1,
+			focus_follows_mouse = 0,
 			scroll_switches_workspace = 1,
 			passthrough_keys = 1,
 			exit_on_click = 1,
