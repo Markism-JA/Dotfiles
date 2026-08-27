@@ -216,16 +216,46 @@ hl.bind(mod .. " + ALT + K", function()
 end, { description = "Align Window Bottom-Right" })
 
 -- Split Scaling
-hl.bind(
-	mod .. " + Semicolon",
-	hl.dsp.layout("splitratio -0.1"),
-	{ repeating = true, description = "Decrease Split Ratio" }
-)
-hl.bind(
-	mod .. " + Apostrophe",
-	hl.dsp.layout("splitratio +0.1"),
-	{ repeating = true, description = "Increase Split Ratio" }
-)
+--- Gets the active layout name for the current workspace
+---@return string "dwindle"|"master"|"scrolling"|"monocle"
+local function get_active_layout()
+	local ws = hl.get_active_workspace()
+
+	-- 1. Query the workspace object's layout field
+	if ws and ws.tiled_layout and ws.tiled_layout ~= "" then
+		return ws.tiled_layout
+	end
+
+	-- 2. Fallback to global config via typed ConfigKey
+	local global_layout = hl.get_config("general.layout")
+	if type(global_layout) == "string" and global_layout ~= "" then
+		return global_layout
+	end
+
+	return "dwindle"
+end
+
+local function resize_layout(delta)
+	local layout = get_active_layout()
+
+	if layout == "master" then
+		local sign = delta > 0 and "+" or ""
+		hl.dispatch(hl.dsp.layout("mfact " .. sign .. delta))
+	elseif layout == "dwindle" then
+		local sign = delta > 0 and "+" or ""
+		hl.dispatch(hl.dsp.layout("splitratio " .. sign .. delta))
+	elseif layout == "scrolling" then
+		hl.dispatch(hl.dsp.layout("colresize +conf"))
+	end
+end
+
+hl.bind(mod .. " + Semicolon", function()
+	resize_layout(-0.05)
+end, { repeating = true, description = "Decrease Split / mfact" })
+
+hl.bind(mod .. " + Apostrophe", function()
+	resize_layout(0.05)
+end, { repeating = true, description = "Increase Split / mfact" })
 
 -- =============================================================================
 -- 4. Focus & Navigation
