@@ -242,13 +242,13 @@ for key, dir in pairs(dirs) do
 	)
 end
 
--- Workspace Local Cycling
+-- Universal Workspace Alt-Tab (Works across Dwindle, Master, Monocle, and Scrolling)
+hl.bind("ALT + Tab", hl.dsp.window.cycle_next({ tiled = true }), { description = "Cycle Next Window" })
 hl.bind(
-	"ALT + Tab",
-	hl.dsp.window.cycle_next({ tiled = false, floating = false }),
-	{ description = "Cycle Next Window" }
+	"ALT + SHIFT + Tab",
+	hl.dsp.window.cycle_next({ tiled = true, next = false }),
+	{ description = "Cycle Previous Window" }
 )
-hl.bind("ALT + SHIFT + Tab", hl.dsp.window.cycle_next({ next = false }), { description = "Cycle Previous Window" })
 
 -- Multi-Monitor Focus
 hl.bind(mod .. " + Period", hl.dsp.focus({ monitor = "+1" }), { description = "Focus Next Monitor" })
@@ -339,9 +339,13 @@ hl.bind(
 -- 6. Workspace Layouts
 -- =============================================================================
 
--- hl.bind(mod .. " + ALT + D", hl.dsp.layout("dwindle"), { description = "Set Workspace Layout to Dwindle" })
--- hl.bind(mod .. " + ALT + M", hl.dsp.layout("master"), { description = "Set Workspace Layout to Master" })
--- hl.bind(mod .. " + ALT + S", hl.dsp.layout("scrolling"), { description = "Set Workspace Layout to Scrolling" })
+-- Dwindle
+
+-- Master
+
+-- Scrolling
+
+-- Monocle
 
 -- =============================================================================
 -- 7. Media & Hardware
