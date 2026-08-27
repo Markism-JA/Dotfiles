@@ -93,25 +93,3 @@ hl.config({
 hl.bind(mod .. " + TAB", hl.plugin.gloview.toggle, { description = "Toggle Overview" })
 hl.bind(mod .. " + bracketright", hl.plugin.gloview.next, { description = "Step Workspace Next" })
 hl.bind(mod .. " + bracketleft", hl.plugin.gloview.prev, { description = "Step Workspace Prev" })
-
-for i = 1, 9 do
-	hl.bind(mod .. " + " .. i, function()
-		hl.plugin.gloview.setworkspace(i)
-	end, { description = "Switch to Workspace " .. i })
-
-	hl.bind(
-		mod .. " + SHIFT + " .. i,
-		hl.dsp.exec_cmd("hyprctl dispatch movetoworkspace " .. i),
-		{ description = "Move Window to Workspace " .. i }
-	)
-end
-
-hl.bind(mod .. " + 0", function()
-	hl.plugin.gloview.setworkspace(10)
-end, { description = "Switch to Workspace 10" })
-
-hl.bind(
-	mod .. " + SHIFT + 0",
-	hl.dsp.exec_cmd("hyprctl dispatch movetoworkspace 10"),
-	{ description = "Move Window to Workspace 10" }
-)

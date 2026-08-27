@@ -61,7 +61,7 @@ local noctalia_ipc = "noctalia msg "
 local hyprScripts = "$HOME/.config/hypr/scripts"
 local terminal = settings.terminal or "kitty"
 local fileManager = settings.fileManager or "nautilus"
-local browser = settings.browser or "microsoft-edge-stable"
+local browser = settings.browser or "google-chrome-stable"
 local officeSoftware = "libreoffice"
 
 -- =============================================================================
@@ -291,22 +291,40 @@ hl.bind(mod .. " + Comma", hl.dsp.focus({ monitor = "-1" }), { description = "Fo
 -- Numeric & Numpad Workspaces (1 - 10)
 for i = 1, 10 do
 	local bind_key = i % 10
+	local target_ws = workspace_in_group(i)
+
+	-- Focus Workspace
 	hl.bind(mod .. " + " .. bind_key, function()
-		hl.dispatch(hl.dsp.focus({ workspace = workspace_in_group(i) }))
+		hl.dispatch(hl.dsp.focus({ workspace = target_ws }))
 	end, { description = "Focus Workspace " .. i })
 
+	-- Move Window to Workspace (Silent / No Follow)
 	hl.bind(mod .. " + ALT + " .. bind_key, function()
-		hl.dispatch(hl.dsp.window.move({ workspace = workspace_in_group(i), follow = false }))
-	end, { description = "Move Window to Workspace " .. i })
+		hl.dispatch(hl.dsp.window.move({ workspace = target_ws, follow = false }))
+	end, { description = "Move Window to Workspace " .. i .. " (Silent)" })
 
+	-- Move Window to Workspace and Follow
+	hl.bind(mod .. " + SHIFT + " .. bind_key, function()
+		hl.dispatch(hl.dsp.window.move({ workspace = target_ws, follow = true }))
+	end, { description = "Move Window to Workspace " .. i .. " (Follow)" })
+
+	-- Numpad Bindings
 	local numpadkey = { 87, 88, 89, 83, 84, 85, 79, 80, 81, 90 }
+
+	-- Focus Workspace (Numpad)
 	hl.bind(mod .. " + code:" .. numpadkey[i], function()
-		hl.dispatch(hl.dsp.focus({ workspace = workspace_in_group(i) }))
+		hl.dispatch(hl.dsp.focus({ workspace = target_ws }))
 	end, { description = "Focus Workspace (Numpad " .. i .. ")" })
 
+	-- Move Window to Workspace (Numpad Silent)
 	hl.bind(mod .. " + ALT + code:" .. numpadkey[i], function()
-		hl.dispatch(hl.dsp.window.move({ workspace = workspace_in_group(i), follow = false }))
-	end, { description = "Move Window to Workspace (Numpad " .. i .. ")" })
+		hl.dispatch(hl.dsp.window.move({ workspace = target_ws, follow = false }))
+	end, { description = "Move Window to Workspace (Numpad " .. i .. " Silent)" })
+
+	-- Move Window to Workspace and Follow (Numpad Follow)
+	hl.bind(mod .. " + SHIFT + code:" .. numpadkey[i], function()
+		hl.dispatch(hl.dsp.window.move({ workspace = target_ws, follow = true }))
+	end, { description = "Move Window to Workspace (Numpad " .. i .. " Follow)" })
 end
 
 -- Workspace Traversal
