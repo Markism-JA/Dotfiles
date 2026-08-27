@@ -32,6 +32,7 @@ local modules = {
 	{ path = "/.config/hypr/keybinds.lua", name = "keybinds" },
 	{ path = "/.config/hypr/monitors.lua", name = "monitors" },
 	{ path = "/.config/hypr/workspaces.lua", name = "workspaces" },
+	{ path = "/.config/hypr/plugins/gloview.lua", name = "plugins/gloview" },
 }
 
 for _, mod in ipairs(modules) do
