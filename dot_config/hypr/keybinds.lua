@@ -91,11 +91,6 @@ hl.bind(
 	hl.dsp.exec_cmd(ipc .. "panel-toggle session"),
 	{ description = "Shell: Toggle session menu" }
 )
--- hl.bind(
--- 	mod .. " + SHIFT + L",
--- 	hl.dsp.exec_cmd("systemctl suspend || loginctl suspend"),
--- 	{ locked = true, description = "Session: Sleep" }
--- )
 
 --##! Utilities
 -- Clipboard
