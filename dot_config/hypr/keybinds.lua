@@ -2,6 +2,49 @@ local function workspace_in_group(i)
 	return tostring(i)
 end
 
+local function move_to_corner(corner, margin)
+	margin = margin or 24
+	local win = hl.get_active_window()
+	if not win or not win.floating then
+		return
+	end
+
+	local mon = hl.get_active_monitor()
+	if not mon then
+		return
+	end
+
+	local mon_x = mon.x or 0
+	local mon_y = mon.y or 0
+	local mon_w = mon.width or 1920
+	local mon_h = mon.height or 1080
+
+	local win_w = win.size and win.size.x or 800
+	local win_h = win.size and win.size.y or 500
+
+	local target_x, target_y
+
+	if corner == "top_left" then
+		target_x = mon_x + margin
+		target_y = mon_y + margin
+	elseif corner == "top_right" then
+		target_x = mon_x + mon_w - win_w - margin
+		target_y = mon_y + margin
+	elseif corner == "bottom_left" then
+		target_x = mon_x + margin
+		target_y = mon_y + mon_h - win_h - margin
+	elseif corner == "bottom_right" then
+		target_x = mon_x + mon_w - win_w - margin
+		target_y = mon_y + mon_h - win_h - margin
+	end
+
+	hl.dispatch(hl.dsp.window.move({
+		x = tostring(math.floor(target_x)),
+		y = tostring(math.floor(target_y)),
+		relative = false,
+	}))
+end
+
 local settings = require("settings")
 local mod = settings.mainMod or "SUPER"
 local ipc = "noctalia msg "
@@ -18,7 +61,6 @@ hl.bind("CTRL + ALT + T", hl.dsp.exec_cmd(terminal))
 hl.bind(mod .. " + E", hl.dsp.exec_cmd(fileManager), { description = "App: File manager" })
 hl.bind(mod .. " + W", hl.dsp.exec_cmd(browser), { description = "App: Browser" })
 hl.bind(mod .. " + Z", hl.dsp.exec_cmd("zen-browser"), { description = "App: Zen Browser" })
-hl.bind(mod .. " + C", hl.dsp.exec_cmd("code"), { description = "App: Code editor" })
 hl.bind(mod .. " + X", hl.dsp.exec_cmd("nvim"), { description = "App: Text editor" })
 hl.bind(
 	"CTRL + " .. mod .. " + SHIFT + ALT + W",
@@ -263,7 +305,84 @@ hl.bind(
 	hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }),
 	{ description = "Window: Fullscreen" }
 )
-hl.bind(mod .. " + P", hl.dsp.window.pin(), { description = "Window: Pin" })
+
+-- Pin Window (Toggle PiP, Float, Center, Pin)
+hl.bind(mod .. " + P", function()
+	local win = hl.get_active_window()
+	if not win then
+		return
+	end
+
+	if win.pinned then
+		-- Unpin and tile (Hyprland automatically restores normal border)
+		hl.dispatch(hl.dsp.window.pin({ action = "disable" }))
+		hl.dispatch(hl.dsp.window.float({ action = "disable" }))
+	else
+		-- Float, resize to PiP, center, and pin (Hyprland automatically applies indicator border)
+		hl.dispatch(hl.dsp.window.float({ action = "enable" }))
+		hl.dispatch(hl.dsp.window.resize({ x = "800", y = "500", relative = false }))
+		hl.dispatch(hl.dsp.window.center())
+		hl.dispatch(hl.dsp.window.pin({ action = "enable" }))
+	end
+end, { description = "Window: Toggle PiP Floating Pin" })
+
+-- Cycle Floating Window Sizes (Small -> Medium -> Large)
+local SIZES = {
+	{ x = 700, y = 450 }, -- Small / PiP
+	{ x = 1100, y = 700 }, -- Medium
+	{ x = 1500, y = 920 }, -- Large
+}
+
+hl.bind(mod .. " + R", function()
+	local win = hl.get_active_window()
+	if not win or not win.floating then
+		return
+	end
+
+	local cur_w = win.size and win.size.x or 0
+	local next_size = SIZES[1]
+
+	-- Cycle to the next preset larger than current size; wrap back to smallest
+	for i, size in ipairs(SIZES) do
+		if cur_w < size.x - 30 then
+			next_size = size
+			break
+		end
+	end
+
+	hl.dispatch(hl.dsp.window.resize({
+		x = tostring(next_size.x),
+		y = tostring(next_size.y),
+		relative = false,
+	}))
+	hl.dispatch(hl.dsp.window.center())
+end, { description = "Window: Cycle Floating Size (Small/Med/Large)" })
+
+-- Center Floating Window
+hl.bind(mod .. "+ C", function()
+	hl.dispatch(hl.dsp.window.center())
+end, { description = "Window: Center Floating" })
+
+-- Top-Left (Super + Alt + H)
+hl.bind(mod .. " + ALT + H", function()
+	move_to_corner("top_left", 24)
+end, { description = "Window: Align Top-Left" })
+
+-- Top-Right (Super + Alt + L)
+hl.bind(mod .. " + ALT + L", function()
+	move_to_corner("top_right", 24)
+end, { description = "Window: Align Top-Right" })
+
+-- Bottom-Left (Super + ALT + J)
+hl.bind(mod .. " + ALT + J", function()
+	move_to_corner("bottom_left", 24)
+end, { description = "Window: Align Bottom-Left" })
+
+-- Bottom-Right (Super + ALT + K)
+hl.bind(mod .. " + ALT + K", function()
+	move_to_corner("bottom_right", 24)
+end, { description = "Window: Align Bottom-Right" })
+
 hl.bind(mod .. " + Semicolon", hl.dsp.layout("splitratio -0.1"), { repeating = true })
 hl.bind(mod .. " + Apostrophe", hl.dsp.layout("splitratio +0.1"), { repeating = true })
 
