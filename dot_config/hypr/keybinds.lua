@@ -82,6 +82,12 @@ hl.bind(
 )
 hl.bind(mod .. " + I", hl.dsp.exec_cmd(noctalia_ipc .. "settings-toggle"), { description = "Launch Noctalia Settings" })
 
+hl.bind(
+	"CTRL + " .. mod .. " + T",
+	hl.dsp.exec_cmd("/home/marky/Scripts/bin/task-manager/launch_dashboard.sh"),
+	{ description = "App: Task Manager Scratchpad" }
+)
+
 -- =============================================================================
 -- 2. Shell & Desktop Controls
 -- =============================================================================
