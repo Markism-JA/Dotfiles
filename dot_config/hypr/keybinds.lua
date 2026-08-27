@@ -373,6 +373,27 @@ hl.bind(
 
 -- Master
 
+-- Promote focused window to Master (or swap first slave if already on master)
+hl.bind(
+	mod .. " + SHIFT + Return",
+	hl.dsp.layout("swapwithmaster master"),
+	{ description = "Promote Window to Master" }
+)
+
+-- Focus Master window directly (or toggle back to previous window)
+hl.bind(mod .. " + M", hl.dsp.layout("focusmaster auto"), { description = "Toggle Focus Master/Stack" })
+
+-- Roll through stack windows into Master while staying focused on Master
+hl.bind(mod .. " + CTRL + bracketright", hl.dsp.layout("rollnext"), { description = "Roll Next Slave to Master" })
+hl.bind(mod .. " + CTRL + bracketleft", hl.dsp.layout("rollprev"), { description = "Roll Prev Slave to Master" })
+
+-- Cycle Master orientation: Left (side stack) -> Center (flanked stacks) -> Top
+hl.bind(
+	mod .. " + Backslash",
+	hl.dsp.layout("orientationcycle left center top"),
+	{ description = "Cycle Workspace Master Orientation" }
+)
+
 -- Scrolling
 
 -- Scroll through the scrolling ribbon with Mouse Wheel
