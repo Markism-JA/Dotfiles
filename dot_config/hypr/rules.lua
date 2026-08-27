@@ -12,10 +12,10 @@ hl.window_rule({
 
 hl.window_rule({
 	match = { class = "^(imv)$" },
-	float = true, -- Floats a window [cite: 420]
-	size = "40% 40%", -- Resizes a floating window [cite: 420]
+	float = true, -- Floats a window
+	size = "40% 40%", -- Resizes a floating window
 	move = "100%-41% 5%",
-	no_initial_focus = true, -- Disables the initial focus to the window [cite: 425]
+	no_initial_focus = true, -- Disables the initial focus to the window
 })
 
 hl.window_rule({
@@ -86,7 +86,7 @@ hl.window_rule({
 	match = { class = "chrome-calendar.google.com__-Default" },
 	float = true,
 	center = true,
-	workspace = "special:gcal silent", -- Sets workspace, supports silent suffix [cite: 420]
+	workspace = "special:gcal silent", -- Sets workspace, supports silent suffix
 	size = "1300 950",
 })
 
@@ -159,16 +159,8 @@ hl.window_rule({
 	workspace = "7",
 })
 
---# Workspace 8 (Games / Launchers)
-hl.window_rule({ match = { class = "^([Ss]team)$" }, workspace = "8" })
--- hl.window_rule({ match = { title = "^(SKlauncher 3.2.10 build.473)$" }, workspace = "8" })
--- hl.window_rule({ match = { class = "^Minecraft.*" }, workspace = "8" })
--- hl.window_rule({ match = { title = "^SKlauncher.*" }, workspace = "8" })
 hl.window_rule({ match = { class = "^(org.vinegarhq.Sober)$" }, workspace = "8" })
 hl.window_rule({ match = { class = "^(heroic)$" }, workspace = "8" })
-
---# Workspace 9 (Virtual Machines)
-hl.window_rule({ match = { class = "^(virt-manager)$" }, workspace = "9" })
 
 --# Special / Android Emulation
 hl.window_rule({ match = { class = "(Waydroid)$" }, workspace = "8" })
