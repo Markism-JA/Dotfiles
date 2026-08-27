@@ -20,31 +20,22 @@ local function is_file_exists(path)
 	if f then
 		f:close()
 		return true
-	else
-		return false
 	end
+	return false
 end
 
-if is_file_exists(HOME .. "/.config/hypr/execs.lua") then
-	require("execs")
-end
+-- Modular Imports
+local modules = {
+	{ path = "/.config/hypr/execs.lua", name = "execs" },
+	{ path = "/.config/hypr/general.lua", name = "general" },
+	{ path = "/.config/hypr/rules.lua", name = "rules" },
+	{ path = "/.config/hypr/keybinds.lua", name = "keybinds" },
+	{ path = "/.config/hypr/monitors.lua", name = "monitors" },
+	{ path = "/.config/hypr/workspaces.lua", name = "workspaces" },
+}
 
-if is_file_exists(HOME .. "/.config/hypr/rules.lua") then
-	require("general")
-end
-
-if is_file_exists(HOME .. "/.config/hypr/rules.lua") then
-	require("rules")
-end
-
-if is_file_exists(HOME .. "/.config/hypr/keybinds.lua") then
-	require("keybinds")
-end
-
-if is_file_exists(HOME .. "/.config/hypr/monitors.lua") then
-	require("monitors")
-end
-
-if is_file_exists(HOME .. "/.config/hypr/workspaces.lua") then
-	require("workspaces")
+for _, mod in ipairs(modules) do
+	if is_file_exists(HOME .. mod.path) then
+		require(mod.name)
+	end
 end
