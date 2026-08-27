@@ -375,6 +375,11 @@ hl.bind(
 
 -- Scrolling
 
+-- Scroll through the scrolling ribbon with Mouse Wheel
+hl.bind(mod .. " + SHIFT + mouse_up", hl.dsp.layout("focus l"), { description = "Scroll Ribbon Left / Prev Window" })
+
+hl.bind(mod .. " + SHIFT + mouse_down", hl.dsp.layout("focus r"), { description = "Scroll Ribbon Right / Next Window" })
+
 -- Monocle
 
 -- =============================================================================
