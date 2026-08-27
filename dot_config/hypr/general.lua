@@ -7,6 +7,14 @@ hl.config({
 hl.config({
 	input = {
 		natural_scroll = false,
+		touchpad = {
+			-- Multiplier for scroll distance (default is 1.0)
+			-- 0.5 - 0.7 cuts kinetic momentum significantly
+			scroll_factor = 0.6,
+		},
+	},
+	binds = {
+		scroll_event_delay = 300,
 	},
 })
 
