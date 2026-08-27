@@ -62,7 +62,6 @@ local hyprScripts = "$HOME/.config/hypr/scripts"
 local terminal = settings.terminal or "kitty"
 local fileManager = settings.fileManager or "nautilus"
 local browser = settings.browser or "google-chrome-stable"
-local officeSoftware = "libreoffice"
 
 -- =============================================================================
 -- 1. Applications & Launchers
@@ -70,16 +69,8 @@ local officeSoftware = "libreoffice"
 
 hl.bind(mod .. " + Return", hl.dsp.exec_cmd(terminal), { description = "Launch Tmux Terminal" })
 hl.bind(mod .. " + T", hl.dsp.exec_cmd("kitty"), { description = "Launch Terminal" })
-hl.bind("CTRL + ALT + T", hl.dsp.exec_cmd(terminal), { description = "Launch Fallback Terminal" })
 hl.bind(mod .. " + E", hl.dsp.exec_cmd(fileManager), { description = "Launch File Manager" })
 hl.bind(mod .. " + W", hl.dsp.exec_cmd(browser), { description = "Launch Web Browser" })
-hl.bind(mod .. " + Z", hl.dsp.exec_cmd("zen-browser"), { description = "Launch Zen Browser" })
-hl.bind(mod .. " + X", hl.dsp.exec_cmd("nvim"), { description = "Launch Neovim Editor" })
-hl.bind(
-	"CTRL + " .. mod .. " + SHIFT + ALT + W",
-	hl.dsp.exec_cmd(officeSoftware),
-	{ description = "Launch Office Suite" }
-)
 hl.bind(mod .. " + I", hl.dsp.exec_cmd(noctalia_ipc .. "settings-toggle"), { description = "Launch Noctalia Settings" })
 
 hl.bind(
