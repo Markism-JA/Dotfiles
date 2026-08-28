@@ -75,6 +75,8 @@ hl.bind(mod .. " + E", hl.dsp.exec_cmd(fileManager), { description = "Launch Fil
 hl.bind(mod .. " + W", hl.dsp.exec_cmd(browser), { description = "Launch Web Browser" })
 hl.bind(mod .. " + I", hl.dsp.exec_cmd(noctalia_ipc .. "settings-toggle"), { description = "Launch Noctalia Settings" })
 
+hl.bind(mod .. " + Space", hl.dsp.exec_cmd("fsearch"), { description = "Launch File Search" })
+
 hl.bind(
 	"CTRL + " .. mod .. " + T",
 	hl.dsp.exec_cmd("/home/marky/Scripts/bin/task-manager/launch_dashboard.sh"),

@@ -171,3 +171,24 @@ hl.window_rule({
 	float = true,
 	size = "515 400",
 })
+
+--# FSearch (Main Search HUD)
+hl.window_rule({
+	match = {
+		class = "^(io\\.github\\.cboxdoerfer\\.FSearch)$",
+		title = "^(FSearch)$",
+	},
+	float = true,
+	center = true,
+	size = "1050 620",
+})
+
+--# FSearch (Preferences Dialog)
+hl.window_rule({
+	match = {
+		class = "^(io\\.github\\.cboxdoerfer\\.FSearch)$",
+		title = "^(Preferences)$",
+	},
+	float = true,
+	center = true,
+})
