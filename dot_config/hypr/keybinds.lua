@@ -119,7 +119,7 @@ hl.bind(
 	{ description = "Toggle Session / Power Menu" }
 )
 hl.bind(
-	mod .. " + ALT + K",
+	mod .. " + SHIFT + K",
 	hl.dsp.exec_cmd(noctalia_ipc .. "panel-toggle kenn/keybind-cheatsheet:cheatsheet"),
 	{ description = "Toggle Keybind Cheatsheet" }
 )
