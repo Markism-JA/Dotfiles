@@ -119,7 +119,7 @@ hl.bind(
 	{ description = "Toggle Session / Power Menu" }
 )
 hl.bind(
-	mod .. " + SHIFT + K",
+	mod .. " + Slash",
 	hl.dsp.exec_cmd(noctalia_ipc .. "panel-toggle kenn/keybind-cheatsheet:cheatsheet"),
 	{ description = "Toggle Keybind Cheatsheet" }
 )
@@ -416,8 +416,14 @@ local function set_active_layout(layout)
 end
 
 -- =============================================================================
--- Direct Layout Selectors (Working)
+-- Direct Layout Selectors
 -- =============================================================================
+
+hl.bind(
+	mod .. " + grave",
+	hl.dsp.exec_cmd(noctalia_ipc .. "panel-toggle maddingo/hypr-layout-switcher:layouts"),
+	{ description = "Toggle Workspace Layout Panel" }
+)
 
 hl.bind(mod .. " + ALT + D", function()
 	set_active_layout("dwindle")
