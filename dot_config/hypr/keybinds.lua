@@ -498,7 +498,7 @@ end, { description = "Clear Tags on Active Window" })
 
 hl.bind("CTRL + " .. mod .. " + SHIFT + U", function()
 	window_tags.gather_tagged("reference", ws_aliases.resolve("aux"))
-end, { description = "Gather Reference Windows to Laptop Screen (WS 8)" })
+end, { description = "Gather Reference Windows to WS 8" })
 
 -- = Media & Hardware
 
@@ -601,12 +601,12 @@ hl.bind(mod .. " + ALT + P", hl.dsp.exec_cmd(stk_ipc .. "toggle"), {
 })
 hl.bind(
 	mod .. " + SHIFT + S",
-	hl.dsp.exec_cmd("noctalia msg screenshot-region"),
+	hl.dsp.exec_cmd(noctalia_ipc .. "screenshot-region"),
 	{ description = "Capture Screen Region (Noctalia)" }
 )
-hl.bind(mod .. " + ALT + Print", hl.dsp.exec_cmd(stk_ipc .. "annotateFullscreen"), {
+hl.bind(mod .. " + ALT + F12", hl.dsp.exec_cmd(noctalia_ipc .. "screenshot-fullscreen"), {
 	locked = true,
-	description = "Capture & Annotate Fullscreen",
+	description = "Capture Fullscreen",
 })
 hl.bind(mod .. " + ALT + SHIFT + S", hl.dsp.exec_cmd(stk_ipc .. "annotateWindow"), {
 	description = "Annotate Focused Window",
