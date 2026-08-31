@@ -65,16 +65,13 @@ local terminal = settings.terminal or "kitty"
 local fileManager = settings.fileManager or "nautilus"
 local browser = settings.browser or "google-chrome-stable"
 
--- =============================================================================
--- 1. Applications & Launchers
--- =============================================================================
+-- = Applications & Launchers
 
 hl.bind(mod .. " + Return", hl.dsp.exec_cmd(terminal), { description = "Launch Tmux Terminal" })
 hl.bind(mod .. " + T", hl.dsp.exec_cmd("kitty"), { description = "Launch Terminal" })
 hl.bind(mod .. " + E", hl.dsp.exec_cmd(fileManager), { description = "Launch File Manager" })
 hl.bind(mod .. " + W", hl.dsp.exec_cmd(browser), { description = "Launch Web Browser" })
 hl.bind(mod .. " + I", hl.dsp.exec_cmd(noctalia_ipc .. "settings-toggle"), { description = "Launch Noctalia Settings" })
-
 hl.bind(mod .. " + Space", hl.dsp.exec_cmd("fsearch"), { description = "Launch File Search" })
 
 hl.bind(
@@ -83,9 +80,7 @@ hl.bind(
 	{ description = "App: Task Manager Scratchpad" }
 )
 
--- =============================================================================
--- 2. Shell & Desktop Controls
--- =============================================================================
+-- = Shell & Desktop Controls
 
 hl.bind(
 	"ALT + Space",
@@ -124,15 +119,13 @@ hl.bind(
 	{ description = "Toggle Keybind Cheatsheet" }
 )
 
--- =============================================================================
--- 3. Window Management & Placement
--- =============================================================================
+-- = Window Management & Placement
 
--- Mouse Manipulation
+-- == Mouse Manipulation
 hl.bind(mod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true, description = "Move Window with Mouse" })
 hl.bind(mod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true, description = "Resize Window with Mouse" })
 
--- State Toggles
+-- == State Toggles
 hl.bind(mod .. " + Q", hl.dsp.window.close(), { description = "Close Active Window" })
 hl.bind(mod .. " + SHIFT + Q", hl.dsp.exec_cmd("hyprctl kill"), { description = "Force Zap Window" })
 hl.bind(mod .. " + ALT + Space", hl.dsp.window.float({ action = "toggle" }), { description = "Toggle Float / Tile" })
@@ -148,7 +141,7 @@ hl.bind(
 	{ description = "Toggle Fullscreen" }
 )
 
--- Pin & Floating Geometry
+-- == Pin & Floating Geometry
 hl.bind(mod .. " + P", function()
 	local win = hl.get_active_window()
 	if not win then
@@ -196,11 +189,11 @@ hl.bind(mod .. " + C", function()
 	hl.dispatch(hl.dsp.window.center())
 end, { description = "Center Floating Window" })
 
--- Corner Snapping
-hl.bind(mod .. " + ALT + H", function()
+-- == Corner Snapping
+hl.bind(mod .. " + ALT + U", function()
 	move_to_corner("top_left", 24)
 end, { description = "Align Window Top-Left" })
-hl.bind(mod .. " + ALT + L", function()
+hl.bind(mod .. " + ALT + I", function()
 	move_to_corner("top_right", 24)
 end, { description = "Align Window Top-Right" })
 hl.bind(mod .. " + ALT + J", function()
@@ -210,18 +203,14 @@ hl.bind(mod .. " + ALT + K", function()
 	move_to_corner("bottom_right", 24)
 end, { description = "Align Window Bottom-Right" })
 
--- Split Scaling
---- Gets the active layout name for the current workspace
----@return string "dwindle"|"master"|"scrolling"|"monocle"
+-- == Split Scaling
 local function get_active_layout()
 	local ws = hl.get_active_workspace()
 
-	-- 1. Query the workspace object's layout field
 	if ws and ws.tiled_layout and ws.tiled_layout ~= "" then
 		return ws.tiled_layout
 	end
 
-	-- 2. Fallback to global config via typed ConfigKey
 	local global_layout = hl.get_config("general.layout")
 	if type(global_layout) == "string" and global_layout ~= "" then
 		return global_layout
@@ -252,11 +241,9 @@ hl.bind(mod .. " + Apostrophe", function()
 	resize_layout(0.05)
 end, { repeating = true, description = "Increase Split / mfact" })
 
--- =============================================================================
--- 4. Focus & Navigation
--- =============================================================================
+-- = Focus & Navigation
 
--- Directional Focus & Window Moving
+-- == Directional Focus & Window Moving
 local dirs = { Left = "l", Right = "r", Up = "u", Down = "d", H = "l", L = "r", K = "u", J = "d" }
 for key, dir in pairs(dirs) do
 	hl.bind(mod .. " + " .. key, hl.dsp.focus({ direction = dir }), { description = "Focus Window " .. key })
@@ -267,7 +254,7 @@ for key, dir in pairs(dirs) do
 	)
 end
 
--- Universal Workspace Alt-Tab (Works across Dwindle, Master, Monocle, and Scrolling)
+-- == Window Cycling
 hl.bind("ALT + Tab", hl.dsp.window.cycle_next({ tiled = true }), { description = "Cycle Next Window" })
 hl.bind(
 	"ALT + SHIFT + Tab",
@@ -275,11 +262,10 @@ hl.bind(
 	{ description = "Cycle Previous Window" }
 )
 
--- Multi-Monitor Focus
+-- == Multi-Monitor Navigation
 hl.bind(mod .. " + Period", hl.dsp.focus({ monitor = "+1" }), { description = "Focus Next Monitor" })
 hl.bind(mod .. " + Comma", hl.dsp.focus({ monitor = "-1" }), { description = "Focus Previous Monitor" })
 
--- Multi-Monitor Window Move (Follows Focus)
 hl.bind(
 	mod .. " + SHIFT + Period",
 	hl.dsp.window.move({ monitor = "+1", follow = true }),
@@ -291,11 +277,9 @@ hl.bind(
 	{ description = "Move Window to Previous Monitor" }
 )
 
--- =============================================================================
--- 5. Workspaces & Scratchpads
--- =============================================================================
+-- = Workspaces & Scratchpads
 
--- Numeric & Numpad Workspaces (1 - 10)
+-- == Workspaces 1-10
 for i = 1, 10 do
 	local bind_key = i % 10
 	local target_ws = workspace_in_group(i)
@@ -318,23 +302,20 @@ for i = 1, 10 do
 	-- Numpad Bindings
 	local numpadkey = { 87, 88, 89, 83, 84, 85, 79, 80, 81, 90 }
 
-	-- Focus Workspace (Numpad)
 	hl.bind(mod .. " + code:" .. numpadkey[i], function()
 		hl.dispatch(hl.dsp.focus({ workspace = target_ws }))
 	end, { description = "Focus Workspace (Numpad " .. i .. ")" })
 
-	-- Move Window to Workspace (Numpad Silent)
 	hl.bind(mod .. " + ALT + code:" .. numpadkey[i], function()
 		hl.dispatch(hl.dsp.window.move({ workspace = target_ws, follow = false }))
 	end, { description = "Move Window to Workspace (Numpad " .. i .. " Silent)" })
 
-	-- Move Window to Workspace and Follow (Numpad Follow)
 	hl.bind(mod .. " + SHIFT + code:" .. numpadkey[i], function()
 		hl.dispatch(hl.dsp.window.move({ workspace = target_ws, follow = true }))
 	end, { description = "Move Window to Workspace (Numpad " .. i .. " Follow)" })
 end
 
--- Workspace Traversal
+-- == Workspace Traversal
 hl.bind(
 	"CTRL + " .. mod .. " + Left",
 	hl.dsp.focus({ workspace = "r-1" }),
@@ -350,15 +331,13 @@ hl.bind(mod .. " + Page_Up", hl.dsp.focus({ workspace = "r-1" }), { description 
 hl.bind(mod .. " + mouse_up", hl.dsp.focus({ workspace = "-1" }), { description = "Scroll Workspace Left" })
 hl.bind(mod .. " + mouse_down", hl.dsp.focus({ workspace = "+1" }), { description = "Scroll Workspace Right" })
 
--- General Scratchpad
+-- == App & Special Scratchpads
 hl.bind(mod .. " + S", hl.dsp.workspace.toggle_special("special"), { description = "Toggle General Scratchpad" })
 hl.bind(
 	mod .. " + CTRL + S",
 	hl.dsp.window.move({ workspace = "special:special", follow = false }),
 	{ description = "Send Window to Scratchpad" }
 )
-
--- Specialized App Scratchpads
 hl.bind(
 	"CTRL + " .. mod .. " + C",
 	hl.dsp.workspace.toggle_special("gcal"),
@@ -390,11 +369,8 @@ hl.bind(
 	{ description = "Toggle Task Dashboard Scratchpad" }
 )
 
--- =============================================================================
--- 6. Workspace Layouts
--- =============================================================================
---- Set layout dynamically on the active workspace
----@param layout "dwindle" | "master" | "scrolling" | "monocle"
+-- = Workspace Layouts
+
 local function set_active_layout(layout)
 	local w = hl.get_active_special_workspace() or hl.get_active_workspace()
 	if not w then
@@ -415,16 +391,12 @@ local function set_active_layout(layout)
 	})
 end
 
--- =============================================================================
--- Direct Layout Selectors
--- =============================================================================
-
+-- == Direct Layout Selectors
 hl.bind(
 	mod .. " + grave",
 	hl.dsp.exec_cmd(noctalia_ipc .. "panel-toggle maddingo/hypr-layout-switcher:layouts"),
 	{ description = "Toggle Workspace Layout Panel" }
 )
-
 hl.bind(mod .. " + ALT + D", function()
 	set_active_layout("dwindle")
 end, { description = "Set Layout: Dwindle" })
@@ -441,45 +413,28 @@ hl.bind(mod .. " + ALT + O", function()
 	set_active_layout("monocle")
 end, { description = "Set Layout: Monocle (One/Deck)" })
 
--- Dwindle
--- Most of the default works with dwindle already cause its the default standard tilling layout.
-
--- Master
-
--- Promote focused window to Master (or swap first slave if already on master)
+-- == Master Layout Controls
 hl.bind(
 	mod .. " + SHIFT + Return",
 	hl.dsp.layout("swapwithmaster master"),
 	{ description = "Promote Window to Master" }
 )
-
--- Focus Master window directly (or toggle back to previous window)
 hl.bind(mod .. " + M", hl.dsp.layout("focusmaster auto"), { description = "Toggle Focus Master/Stack" })
-
--- Roll through stack windows into Master while staying focused on Master
 hl.bind(mod .. " + CTRL + bracketright", hl.dsp.layout("rollnext"), { description = "Roll Next Slave to Master" })
 hl.bind(mod .. " + CTRL + bracketleft", hl.dsp.layout("rollprev"), { description = "Roll Prev Slave to Master" })
-
--- Cycle Master orientation: Left (side stack) -> Center (flanked stacks) -> Top
 hl.bind(
 	mod .. " + Backslash",
 	hl.dsp.layout("orientationcycle left center top"),
 	{ description = "Cycle Workspace Master Orientation" }
 )
 
--- Scrolling
-
--- Scroll through the scrolling ribbon with Mouse Wheel
+-- == Scrolling Layout Controls
 hl.bind(mod .. " + SHIFT + mouse_up", hl.dsp.layout("focus l"), { description = "Scroll Ribbon Left / Prev Window" })
-
 hl.bind(mod .. " + SHIFT + mouse_down", hl.dsp.layout("focus r"), { description = "Scroll Ribbon Right / Next Window" })
 
--- Monocle
--- =============================================================================
--- 6.1 Semantic Workspace Navigation & Offloading (Workspaces 5 - 10)
--- =============================================================================
+-- = Semantic Navigation & Staging
 
--- Fast Jumps (mod + ALT + <Key>)
+-- == Semantic Workspace Offloading
 hl.bind(mod .. " + ALT + B", function()
 	ws_aliases.focus_to("backend")
 end, { description = "Focus Workspace 5 (Backend/DB)" })
@@ -492,7 +447,7 @@ hl.bind(mod .. " + ALT + V", function()
 	ws_aliases.focus_to("media")
 end, { description = "Focus Workspace 7 (Media/Video)" })
 
-hl.bind(mod .. " + ALT + U", function()
+hl.bind(mod .. " + ALT + W", function()
 	ws_aliases.focus_to("aux")
 end, { description = "Focus Workspace 8 (Laptop Strip)" })
 
@@ -504,36 +459,31 @@ hl.bind(mod .. " + ALT + BackSpace", function()
 	ws_aliases.focus_to("staging")
 end, { description = "Focus Workspace 10 (Staging/Dump)" })
 
--- Direct Offloading (CTRL + mod + ALT + <Key>)
-hl.bind("CTRL + " .. mod .. " + ALT + B", function()
+hl.bind(mod .. " + CTRL + B", function()
 	ws_aliases.send_to("backend", false)
 end, { description = "Send Window to Workspace 5 (Backend/DB)" })
 
-hl.bind("CTRL + " .. mod .. " + ALT + R", function()
+hl.bind(mod .. " + CTRL + R", function()
 	ws_aliases.send_to("research", false)
 end, { description = "Send Window to Workspace 6 (Research)" })
 
-hl.bind("CTRL + " .. mod .. " + ALT + M", function()
+hl.bind(mod .. " + CTRL + V", function()
 	ws_aliases.send_to("media", false)
 end, { description = "Send Window to Workspace 7 (Media)" })
 
-hl.bind("CTRL + " .. mod .. " + ALT + U", function()
+hl.bind(mod .. " + CTRL + W", function()
 	ws_aliases.send_to("aux", false)
 end, { description = "Send Window to Workspace 8 (Laptop Strip)" })
 
-hl.bind("CTRL + " .. mod .. " + ALT + Y", function()
+hl.bind(mod .. " + CTRL + Y", function()
 	ws_aliases.send_to("monitor", false)
 end, { description = "Send Window to Workspace 9 (Logs/Metrics)" })
 
-hl.bind("CTRL + " .. mod .. " + ALT + BackSpace", function()
+hl.bind(mod .. " + CTRL + BackSpace", function()
 	ws_aliases.send_to("staging", false)
 end, { description = "Dump Window to Workspace 10 (Staging)" })
 
--- =============================================================================
--- 6.2 Window Tagging & Staging Pipelines
--- =============================================================================
-
--- Toggle Tags
+-- == Window Tagging Pipelines
 hl.bind("CTRL + " .. mod .. " + U", function()
 	window_tags.toggle_tag("reference")
 end, { description = "Toggle 'reference' Tag on Window" })
@@ -546,16 +496,13 @@ hl.bind("CTRL + " .. mod .. " + BackSpace", function()
 	window_tags.clear_tags()
 end, { description = "Clear Tags on Active Window" })
 
--- Batch Pipeline (Gather to Secondary Screen)
 hl.bind("CTRL + " .. mod .. " + SHIFT + U", function()
 	window_tags.gather_tagged("reference", ws_aliases.resolve("aux"))
 end, { description = "Gather Reference Windows to Laptop Screen (WS 8)" })
 
--- =============================================================================
--- 7. Media & Hardware
--- =============================================================================
+-- = Media & Hardware
 
--- Brightness Controls
+-- == Brightness Controls
 hl.bind(
 	"XF86MonBrightnessUp",
 	hl.dsp.exec_cmd(noctalia_ipc .. "brightness-up"),
@@ -567,7 +514,7 @@ hl.bind(
 	{ locked = true, repeating = true, description = "Decrease Screen Brightness" }
 )
 
--- Volume Controls
+-- == Volume & Mute Controls
 hl.bind(
 	"XF86AudioRaiseVolume",
 	hl.dsp.exec_cmd(noctalia_ipc .. "volume-up"),
@@ -599,7 +546,7 @@ hl.bind(
 	{ locked = true, description = "Toggle Microphone Mute" }
 )
 
--- Playback Controls
+-- == Playback Controls
 hl.bind(
 	"XF86AudioNext",
 	hl.dsp.exec_cmd(noctalia_ipc .. "media next"),
@@ -636,7 +583,7 @@ hl.bind(
 	{ locked = true, description = "Play / Pause Media" }
 )
 
--- Screen Zoom
+-- == Desktop Zoom
 hl.bind(mod .. " + Minus", function()
 	zoomfunction(-0.3)
 end, { repeating = true, description = "Zoom Out Desktop" })
@@ -644,79 +591,48 @@ hl.bind(mod .. " + Equal", function()
 	zoomfunction(0.3)
 end, { repeating = true, description = "Zoom In Desktop" })
 
--- =============================================================================
--- 8. Screen Toolkit & Capture Utilities
--- =============================================================================
+-- = Screen Toolkit & Capture Utilities
 
 local stk_ipc = "noctalia msg plugin alexander/screen-toolkit:service all "
 
--- -----------------------------------------------------------------------------
--- 8.1 Primary Screen Toolkit HUD & Annotations
--- -----------------------------------------------------------------------------
-
--- Open / Toggle Screen Toolkit Panel (SUPER + P)
+-- == Annotations & Region Capture
 hl.bind(mod .. " + ALT + P", hl.dsp.exec_cmd(stk_ipc .. "toggle"), {
 	description = "Toggle Screen Toolkit Panel",
 })
-
--- Noctalia Screenshot
 hl.bind(
 	mod .. " + SHIFT + S",
 	hl.dsp.exec_cmd("noctalia msg screenshot-region"),
 	{ description = "Capture Screen Region (Noctalia)" }
 )
-
--- Fullscreen Annotate (SUPER + ALT + Print)
 hl.bind(mod .. " + ALT + Print", hl.dsp.exec_cmd(stk_ipc .. "annotateFullscreen"), {
 	locked = true,
 	description = "Capture & Annotate Fullscreen",
 })
-
--- Focused Window Annotate (SUPER + ALT + SHIFT + S)
 hl.bind(mod .. " + ALT + SHIFT + S", hl.dsp.exec_cmd(stk_ipc .. "annotateWindow"), {
 	description = "Annotate Focused Window",
 })
 
--- -----------------------------------------------------------------------------
--- 8.2 Productivity, OCR & Visual Intelligence (Screen Toolkit IPC)
--- -----------------------------------------------------------------------------
-
--- Extract Text via OCR to Clipboard (SUPER + SHIFT + X)
+-- == Productivity & OCR
 hl.bind(mod .. " + SHIFT + X", hl.dsp.exec_cmd(stk_ipc .. "ocr"), {
 	description = "Extract Text via OCR (Screen Toolkit)",
 })
-
--- Search Region with Google Lens (SUPER + SHIFT + A)
 hl.bind(mod .. " + SHIFT + A", hl.dsp.exec_cmd(stk_ipc .. "lens"), {
 	description = "Search Screen Snippet (Google Lens)",
 })
-
--- Pixel Color Picker (SUPER + SHIFT + C)
 hl.bind(mod .. " + SHIFT + C", hl.dsp.exec_cmd(stk_ipc .. "colorPicker"), {
 	description = "Pick Color to Clipboard (Screen Toolkit)",
 })
-
--- QR / Barcode Scanner (SUPER + SHIFT + Q)
-hl.bind(mod .. " + SHIFT + Q", hl.dsp.exec_cmd(stk_ipc .. "qr"), {
-	description = "Scan QR / Barcode to Clipboard",
-})
-
--- Measure Region Pixels (SUPER + SHIFT + D)
-hl.bind(mod .. " + SHIFT + D", hl.dsp.exec_cmd(stk_ipc .. "measure"), {
+hl.bind(mod .. " + SHIFT + E", hl.dsp.exec_cmd(stk_ipc .. "measure"), {
 	description = "Measure Region Dimensions",
 })
 
--- -----------------------------------------------------------------------------
--- 8.3 Quick Raw Clipboard Captures
--- -----------------------------------------------------------------------------
-
+-- == Raw Screen Captures
 local grimhyprctl = "grim -o \"$(hyprctl activeworkspace -j | jq -r '.monitor')\""
 
 hl.bind("Print", hl.dsp.exec_cmd(grimhyprctl .. " - | wl-copy"), {
 	locked = true,
 	description = "Copy Active Screen to Clipboard",
 })
-
 hl.bind(
 	"CTRL + Print",
 	hl.dsp.exec_cmd(
@@ -730,30 +646,21 @@ hl.bind(
 	}
 )
 
--- -----------------------------------------------------------------------------
--- 8.4 GPU Screen Recorder (Main Camera / Webcam Overlay & Hardware Video)
--- -----------------------------------------------------------------------------
-
--- Open GSR Dashboard Overlay (SUPER + SHIFT + R)
+-- == GPU Screen Recorder
 hl.bind(mod .. " + SHIFT + R", hl.dsp.exec_cmd("gsr-ui"), {
 	description = "Open GPU Screen Recorder Overlay",
 })
-
--- Toggle Hardware Screen + Camera Recording (SUPER + ALT + SHIFT + R)
 hl.bind(mod .. " + ALT + SHIFT + R", hl.dsp.exec_cmd("gsr-ui-cli toggle-record"), {
 	locked = true,
 	description = "GSR: Start / Stop Recording",
 })
-
--- Pause / Resume Hardware Recording (SUPER + ALT + SHIFT + Space)
 hl.bind(mod .. " + ALT + SHIFT + Space", hl.dsp.exec_cmd("gsr-ui-cli toggle-pause"), {
 	locked = true,
 	description = "GSR: Pause / Resume Recording",
 })
 
--- =============================================================================
--- 9. Submaps & Modes: VM Passthrough
--- =============================================================================
+-- = Submaps & Modes
+
 local function toggle_vm_passthrough()
 	local current_submap = hl.get_current_submap()
 
@@ -774,7 +681,6 @@ local function toggle_vm_passthrough()
 	end
 end
 
--- Define the Submap
 hl.define_submap("virtual-machine", function()
 	hl.bind(
 		mod .. " + CTRL + Backslash",
@@ -783,5 +689,4 @@ hl.define_submap("virtual-machine", function()
 	)
 end)
 
--- Root-level bind to enter
 hl.bind(mod .. " + CTRL + Backslash", toggle_vm_passthrough, { description = "Toggle VM Input Passthrough" })

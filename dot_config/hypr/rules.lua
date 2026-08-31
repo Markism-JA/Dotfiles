@@ -91,6 +91,13 @@ hl.window_rule({
 })
 
 hl.window_rule({
+	match = { class = "^(dev.noctalia.Noctalia)$" },
+	float = true,
+	center = true,
+	size = "1080 720",
+})
+
+hl.window_rule({
 	match = { class = "^(Caprine)$" },
 	float = true,
 	center = true,
