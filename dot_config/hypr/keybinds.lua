@@ -119,6 +119,16 @@ hl.bind(
 	{ description = "Toggle Keybind Cheatsheet" }
 )
 
+-- == Keystroke Visualizer (wshowkeys)
+local wshowkeys_cmd =
+	"pkill -x wshowkeys || wshowkeys -a bottom -F 'Monospace 24' -s '#A2CDE2' -f '#B9C9D2' -b '#201B1488' -l 600 -t 200 -m 75 -M -U -S"
+
+hl.bind(
+	mod .. " + ALT + Slash",
+	hl.dsp.exec_cmd(wshowkeys_cmd),
+	{ description = "Toggle Keystroke Overlay (wshowkeys)" }
+)
+
 -- = Window Management & Placement
 
 -- == Mouse Manipulation
