@@ -105,7 +105,7 @@ hl.window_rule({
 })
 
 hl.window_rule({
-	match = { class = "^(instagram)$" },
+	match = { class = "chrome-www.instagram.com__-Default" },
 	float = true,
 	center = true,
 	workspace = "special:insta silent",

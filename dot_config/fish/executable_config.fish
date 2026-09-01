@@ -9,12 +9,16 @@ fish_vi_key_bindings
 #init, only works if its in config.fish
 zoxide init fish | source
 
-if test -z "$DISPLAY" \
-        -a -z "$WAYLAND_DISPLAY" \
-        -a (tty) = /dev/tty1 \
-        -a (pgrep -u (id -u) -x Hyprland | wc -l) -eq 0
-    set -x XDG_SESSION_TYPE wayland
-    set -x XDG_CURRENT_DESKTOP Hyprland
-    set -x WLR_NO_HARDWARE_CURSORS 1
-    exec dbus-run-session Hyprland
+# tabtab source for packages
+# uninstall by removing these lines
+[ -f ~/.config/tabtab/fish/__tabtab.fish ]; and . ~/.config/tabtab/fish/__tabtab.fish; or true
+
+function fish_title
+    # If a command is running, show it; otherwise show current directory
+    set -l cmd (status current-command)
+    if test -n "$cmd" -a "$cmd" != fish
+        echo "$cmd: "(prompt_pwd)
+    else
+        echo (prompt_pwd)
+    end
 end
