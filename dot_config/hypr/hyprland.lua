@@ -1,14 +1,19 @@
 local HOME = os.getenv("HOME")
 
--- Ozone / Wayland Hints
+-- Ozone / Wayland Hints (Electron & Chromium apps)
 hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
 
--- Qt Theming & Wayland backend
+-- Force GTK / Electron to use KDE/xdg desktop portals for file pickers
+hl.env("GTK_USE_PORTAL", "1")
+
+-- Qt Theming & Wayland backend (KDE-focused)
 hl.env("QT_QPA_PLATFORM", "wayland;xcb")
-hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 hl.env("QT_QPA_PLATFORMTHEME", "kde")
+hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
+hl.env("QT_AUTO_SCREEN_SCALE_FACTOR", "1")
 hl.env("XDG_MENU_PREFIX", "plasma-")
 
+-- Hyprland Plugin Manager Permissions
 hl.permission({
 	binary = "/usr/(bin|local/bin)/hyprpm",
 	type = "plugin",
