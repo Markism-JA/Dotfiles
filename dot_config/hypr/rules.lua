@@ -8,6 +8,15 @@ hl.window_rule({
 	move = "-100 -100",
 })
 
+-- Noctalia
+
+hl.window_rule({
+	match = { class = "^(dev.noctalia.Noctalia)$" },
+	float = true,
+	center = true,
+	size = "1080 720",
+})
+
 --# Media / Viewers
 
 hl.window_rule({
