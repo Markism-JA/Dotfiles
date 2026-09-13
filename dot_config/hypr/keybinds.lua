@@ -265,8 +265,15 @@ for key, dir in pairs(dirs) do
 end
 
 -- == Window Cycling
-hl.bind("ALT + Tab", hl.dsp.window.cycle_next({}), { description = "Cycle Next Window" })
-hl.bind("ALT + SHIFT + Tab", hl.dsp.window.cycle_next({ next = false }), { description = "Cycle Previous Window" })
+hl.bind("ALT + Tab", function()
+	hl.dispatch(hl.dsp.window.cycle_next())
+	hl.dispatch(hl.dsp.window.alter_zorder({ mode = "top" }))
+end, { description = "Cycle Next and Bring to Top" })
+
+hl.bind("ALT + SHIFT + Tab", function()
+	hl.dispatch(hl.dsp.window.cycle_next({ next = false }))
+	hl.dispatch(hl.dsp.window.alter_zorder({ mode = "top" }))
+end, { description = "Cycle Previous and Bring to Top" })
 
 -- == Multi-Monitor Navigation
 hl.bind(mod .. " + Period", hl.dsp.focus({ monitor = "+1" }), { description = "Focus Next Monitor" })
