@@ -3,6 +3,12 @@ local HOME = os.getenv("HOME")
 -- Ozone / Wayland Hints (Electron & Chromium apps)
 hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
 
+-- Mouse cursor
+hl.env("HYPRCURSOR_THEME", "Adwaita")
+hl.env("HYPRCURSOR_SIZE", "24")
+hl.env("XCURSOR_THEME", "Adwaita")
+hl.env("XCURSOR_SIZE", "24")
+
 -- Force GTK / Electron to use KDE/xdg desktop portals for file pickers
 hl.env("GTK_USE_PORTAL", "1")
 
