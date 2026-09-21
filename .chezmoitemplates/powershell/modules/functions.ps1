@@ -1,149 +1,117 @@
-# BUG: this does not work properly on windows, but it works in linux pwsh 7. IDK why.
+# Cache the fzf path once at module/profile load time (Arch Linux & Windows compatible)
+function Get-FzfPath {
+    if (-not $script:FzfPath) {$cmd = Get-Command fzf -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($cmd) {
+            $script:FzfPath =$cmd.Source
+        }
+    }
+    return $script:FzfPath
+}
 
+$script:FzfPath = Get-FzfPath
+
+<#
+.SYNOPSIS
+    Parses and deduplicates PSReadLine persistent history newest-first.
+#>
+function Get-UniqueHistory {
+    [CmdletBinding()]
+    param(
+        [string]$Path = (Get-PSReadLineOption).HistorySavePath
+    )
+
+    if (-not $Path -or -not (Test-Path -LiteralPath $Path)) {
+        return @()
+    }
+
+    # 1. Parse multiline entries based on PSReadLine backtick continuation
+    $rawEntries = [System.Collections.Generic.List[string]]::new()
+    $buffer = [System.Text.StringBuilder]::new()
+
+    foreach ($line in [System.IO.File]::ReadLines($Path)) {
+        if ($line.EndsWith('`')) {
+            # Strip trailing backtick and accumulate
+            [void]$buffer.AppendLine($line.Substring(0, $line.Length - 1))
+        } else {
+            [void]$buffer.Append($line)
+            $rawEntries.Add($buffer.ToString())
+            [void]$buffer.Clear()
+        }
+    }
+
+    if ($buffer.Length -gt 0) {
+        $rawEntries.Add($buffer.ToString())
+    }
+
+    # 2. Deduplicate in reverse order (newest-first) using an OrdinalIgnoreCase set
+    $seen = [System.Collections.Generic.HashSet[string]]::new(
+        [System.StringComparer]::OrdinalIgnoreCase
+    )
+    $unique = [System.Collections.Generic.List[string]]::new()
+
+    for ($i = $rawEntries.Count - 1; $i -ge 0; $i--) {
+        # Normalize boundary whitespace only; internal newlines and indentation remain intact
+        $entry = $rawEntries[$i].Trim()
+        if (-not [string]::IsNullOrEmpty($entry) -and $seen.Add($entry)) {
+            $unique.Add($entry)
+        }
+    }
+
+    return $unique
+}
+
+<#
+.SYNOPSIS
+    Interactive history search for PSReadLine powered by fzf.
+#>
 function Search-History {
-    $historyPath = (Get-PSReadLineOption).HistorySavePath
+    [CmdletBinding()]
+    param()
 
-    if (-not $historyPath -or -not (Test-Path $historyPath)) {
-        return 
+    $fzf = Get-FzfPath
+    if (-not $fzf) { return }
+
+    $history = Get-UniqueHistory
+    if ($history.Count -eq 0) { return }
+
+    # 1. Capture current buffer state
+    $currentLine = $null
+    $cursorPos = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$currentLine, [ref]$cursorPos)
+
+    # 2. Build indexed payload: "<index>\t<display_rank> │ <display_command>"
+    $fzfInput = for ($i = 0; $i -lt $history.Count; $i++) {
+        $rank = "{0:D5}" -f ($i + 1)
+        $displayCmd = ($history[$i] -replace '\r?\n', ' ↵ ')
+        "{0}`t{1} │ {2}" -f $i, $rank,$displayCmd
     }
 
-    $line = $null
-    $cursor = $null
-    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
-    $currentQuery = $line
-
-    # 2. Read and Deduplicate
-    $rawHistory = @(Get-Content $historyPath -ErrorAction SilentlyContinue)
-    [System.Collections.ArrayList]$uniqueHistory = $rawHistory[($rawHistory.Count - 1)..0] | Select-Object -Unique
-
-    $totalCount = $uniqueHistory.Count
-    if ($totalCount -eq 0) {
-        return 
-    }
-
-    # 3. Format lines
-    $historyForFzf = 0..($totalCount - 1) | ForEach-Object {
-        $index = $_
-        $displayNumber = $totalCount - $index
-        "{0:D5} │ {1}" -f $displayNumber, $uniqueHistory[$index]
-    }
-
-    # 4. Define fzf arguments
+    # 3. Configure fzf with history-oriented heuristics
     $fzfArgs = @(
-        "--ansi",
-        "--multi",
+        "--delimiter=`t",
+        "--with-nth=2..",
+        "--scheme=history",
         "--prompt=History> ",
         "--border=rounded",
         "--layout=reverse",
-        "--preview-window=hidden",
-        "--query=$currentQuery"
+        "--height=60%",
+        "--preview-window=hidden"
     )
 
-    $selectedLines = $historyForFzf | fzf $fzfArgs
-    if ($selectedLines) {
-        $commands = $selectedLines -split "`n" | ForEach-Object {
-            ($_ -split ' │ ', 2)[1]
-        }
-
-        $commandToInsert = $commands -join '; '
-        # Sanitize text
-        $commandToInsert = $commandToInsert -replace "[\r\n]+", ""
-        $commandToInsert = $commandToInsert.Trim()
-
-        # Clean Replace
-        [Microsoft.PowerShell.PSConsoleReadLine]::DeleteLine()
-        [Microsoft.PowerShell.PSConsoleReadLine]::Insert($commandToInsert)
-        [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition(0)
-
+    if (-not [string]::IsNullOrWhiteSpace($currentLine)) {
+        $fzfArgs += "--query=$currentLine"
     }
 
-    # 6. Force Cursor Shape Reset (Linux/Terminal safe method)
-    Write-Host -NoNewline "$([char]27)[6 q"
-}
+    # 4. Invoke native fzf with isolated array index
+    $selected = $fzfInput | & $fzf $fzfArgs
 
-function Search-GitLog {
-    # Check if in a git repo
-    if (-not (git rev-parse --git-dir 2 Out-File $null)) { 
-        Write-Error "Not in a git repository."
-        return 
-    }
+    if ($selected) {
+        # Extract the hidden index from field 1
+        $rawIndex = ($selected -split "`t", 2)[0].Trim()
+        $commandToInsert = $history[[int]$rawIndex]
 
-    # 1. Get Log Data
-    $format = '%C(bold blue)%h%C(reset) - %C(cyan)%ad%C(reset) %C(yellow)%d%C(reset) %s [%an]'
-    $logs = @(git log --no-show-signature --color=always --format=format:$format --date=short)
-    
-    if ($logs.Count -eq 0) {
-        return 
-    }
-
-    # 2. Define fzf arguments (Blank Query)
-    $fzfArgs = @(
-        "--ansi",
-        "--multi",
-        "--prompt=Git Log> ",
-        "--border=rounded",
-        "--layout=reverse",
-        "--preview=git show --color=always {1}",
-        "--preview-window=right:60%"
-    )
-
-    # 3. Run FZF
-    $selectedLines = $logs | fzf $fzfArgs
-
-    if ($selectedLines) {
-        $hashes = $selectedLines -split "`n" | ForEach-Object {
-            # Extract hash safely
-            if ($_ -match '\b([a-f0-9]{7,})\b') { 
-                $matches[1] 
-            }
-        }
-
-        $textToInsert = $hashes -join ' '
-
-        # 4. Insert at Cursor
-        [Microsoft.PowerShell.PSConsoleReadLine]::Insert($textToInsert)
-    }
-}
-
-function Search-GitStatus {
-    if (-not (git rev-parse --git-dir 2 Out-File $null)) { 
-        Write-Error "Not in a git repository."
-        return 
-    }
-
-    # 1. Get Status Data
-    $status = @(git -c color.status=always status --short)
-    if ($status.Count -eq 0) {
-        return 
-    }
-
-    # 2. Define fzf arguments (Blank Query)
-    $fzfArgs = @(
-        "--ansi",
-        "--multi",
-        "--prompt=Git Status> ",
-        "--border=rounded",
-        "--layout=reverse",
-        "--nth=2..", 
-        "--preview=git diff --color=always {2}",
-        "--preview-window=right:60%"
-    )
-
-    # 3. Run FZF
-    $selectedLines = $status | fzf $fzfArgs
-
-    if ($selectedLines) {
-        $paths = $selectedLines -split "`n" | ForEach-Object {
-            if ($_ -match '^R\s+.* -> (.+)$') { 
-                $matches[1] 
-            } else { 
-                $_.Substring(3) 
-            }
-        }
-
-        $textToInsert = $paths -join ' '
-
-        # 4. Insert at Cursor
-        [Microsoft.PowerShell.PSConsoleReadLine]::Insert($textToInsert)
+        # 5. Atomically replace buffer using the valid static method
+        $lengthToReplace = if ($currentLine) {$currentLine.Length } else { 0 }
+        [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $lengthToReplace,$commandToInsert)
     }
 }
