@@ -1,4 +1,4 @@
-Set-PSReadLineKeyHandler -Key Escape -Function ViEditVisually
+Set-PSReadLineKeyHandler -Key Ctrl+e -Function ViEditVisually
 
 # Function bindings
 

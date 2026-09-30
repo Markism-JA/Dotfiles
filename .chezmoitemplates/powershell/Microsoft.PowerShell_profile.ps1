@@ -1,3 +1,4 @@
+#
 # env
 $env:EDITOR = "nvim"
 $env:VISUAL = "nvim"
@@ -5,6 +6,9 @@ $env:VISUAL = "nvim"
 if ($IsWindows)
 {
     $extraConfig = Join-Path $HOME "Documents\PowerShell\modules"
+    if ($env:TERM -eq "tmux-256color") {
+        $env:TERM = "xterm-256color"
+    }
 } else
 {
     $extraConfig = Join-Path $HOME ".config/powershell/modules"
