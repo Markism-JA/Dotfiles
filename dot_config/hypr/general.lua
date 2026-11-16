@@ -116,35 +116,34 @@ hl.curve("stall", {
 hl.animation({
 	leaf = "windowsIn",
 	enabled = true,
-	speed = 3,
-	bezier = "emphasizedDecel",
-	style = "popin 80%",
+	speed = 2,
+	bezier = "standardDecel",
+	style = "slide",
 })
 hl.animation({
 	leaf = "fadeIn",
 	enabled = true,
-	speed = 3,
-	bezier = "emphasizedDecel",
+	speed = 2,
+	bezier = "standardDecel",
 })
 hl.animation({
 	leaf = "windowsOut",
 	enabled = true,
 	speed = 2,
-	bezier = "emphasizedDecel",
-	style = "popin 90%",
+	bezier = "standardDecel",
+	style = "slide",
 })
 hl.animation({
 	leaf = "fadeOut",
 	enabled = true,
 	speed = 2,
-	bezier = "emphasizedDecel",
+	bezier = "standardDecel",
 })
 hl.animation({
 	leaf = "windowsMove",
 	enabled = true,
-	speed = 3,
-	bezier = "emphasizedDecel",
-	style = "slide",
+	speed = 1.5,
+	bezier = "standardDecel",
 })
 hl.animation({
 	leaf = "border",
@@ -279,8 +278,8 @@ hl.config({
 	},
 
 	scrolling = {
-		-- Automatically span 100% width if only one column exists on the workspace
-		fullscreen_on_one_column = true,
+		-- Keep column width consistent instead of resizing 100% <-> 50% when a second window opens/closes
+		fullscreen_on_one_column = false,
 
 		-- 50% screen width default lets 2 columns sit side-by-side cleanly on 16:9 displays
 		column_width = 0.5,
