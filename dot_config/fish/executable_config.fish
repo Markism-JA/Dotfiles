@@ -22,3 +22,7 @@ function fish_title
         echo (prompt_pwd)
     end
 end
+direnv hook fish | source
+
+# Added by Antigravity CLI installer
+set -gx PATH "/home/marky/.local/bin" $PATH

@@ -15,3 +15,7 @@ compinit -d "$ZSH_CACHE_DIR/zcompdump-$ZSH_VERSION"
 for file in "$CONFIG_DIR"/*(.); do
     source "$file"
 done
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/marky/.local/bin:$PATH"
