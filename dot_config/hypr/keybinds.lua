@@ -239,7 +239,8 @@ local function resize_layout(delta)
 		local sign = delta > 0 and "+" or ""
 		hl.dispatch(hl.dsp.layout("splitratio " .. sign .. delta))
 	elseif layout == "scrolling" then
-		hl.dispatch(hl.dsp.layout("colresize +conf"))
+		local step = delta > 0 and "+conf" or "-conf"
+		hl.dispatch(hl.dsp.layout("colresize " .. step))
 	end
 end
 

@@ -1,35 +1,11 @@
-hl.config({
-	xwayland = {
-		force_zero_scaling = true,
-	},
-})
-
-hl.config({
-	input = {
-		natural_scroll = false,
-		touchpad = {
-			-- Multiplier for scroll distance (default is 1.0)
-			-- 0.5 - 0.7 cuts kinetic momentum significantly
-			scroll_factor = 0.6,
-		},
-	},
-	binds = {
-		scroll_event_delay = 300,
-	},
-})
-
 hl.device({
 	name = "elan0522:01-04f3:31c3-touchpad",
 	sensitivity = 0.5,
 })
 
-hl.animation({
-	leaf = "workspaces",
-	enabled = false,
-})
-
 hl.config({
 	general = {
+		layout = "dwindle",
 		gaps_in = 4,
 		gaps_out = 5,
 		gaps_workspaces = 50,
@@ -236,22 +212,6 @@ hl.animation({
 	bezier = "standardDecel",
 })
 
-hl.animation({ leaf = "fade", enabled = false })
-
-hl.animation({
-	leaf = "windows",
-	enabled = true,
-	speed = 2,
-	bezier = "default",
-	style = "popin 95%",
-})
-
-hl.animation({
-	leaf = "windowsMove",
-	enabled = true,
-	speed = 2,
-	bezier = "default",
-})
 hl.config({
 	input = {
 		kb_layout = "us",
@@ -329,15 +289,11 @@ hl.config({
 		-- Use 0 ("center") if you prefer an ultrawide/cinema camera tracking feel
 		focus_fit_method = 1,
 		follow_focus = true,
-		follow_min_visible = 0.0,
+		follow_min_visible = 0.4,
 		explicit_column_widths = "0.3333, 0.5, 0.6667, 1.0",
 		wrap_focus = false,
 		wrap_swapcol = false,
 		direction = "right",
-	},
-
-	general = {
-		layout = "dwindle",
 	},
 
 	master = {
