@@ -328,21 +328,11 @@ hl.config({
 		-- 1 = "fit" brings partially hidden columns just inside the viewport without jarring jumps;
 		-- Use 0 ("center") if you prefer an ultrawide/cinema camera tracking feel
 		focus_fit_method = 1,
-
-		-- Automatically scroll the camera ribbon when focus changes
 		follow_focus = true,
-
-		-- Require 40% of a column to be visible before camera triggers smooth auto-scroll
-		follow_min_visible = 0.4,
-
-		-- Standard preset column steps for quick toggling (1/3, 1/2, 2/3, Full)
-		explicit_column_widths = "0.333, 0.5, 0.667, 1.0",
-
-		-- Prevent accidental wrap-around disorientation when reaching strip edges
+		follow_min_visible = 0.0,
+		explicit_column_widths = "0.3333, 0.5, 0.6667, 1.0",
 		wrap_focus = false,
 		wrap_swapcol = false,
-
-		-- Windows append downwards in a vertical reel
 		direction = "right",
 	},
 
